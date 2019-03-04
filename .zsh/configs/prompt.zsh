@@ -1,0 +1,1 @@
+/Users/alvarovillen/dotfiles/zsh/configs/prompt.zsh

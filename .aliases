@@ -1,0 +1,6 @@
+alias ll="ls -al"
+alias mkdir="mkdir -p"
+alias h='history'
+alias tailf='tail -f'
+alias todo='$EDITOR ~/.todo'
+

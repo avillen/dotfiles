@@ -1,3 +1,5 @@
+set nocompatible
+
 set backspace=2   " Backspace deletes like most programs in insert mode
 set nobackup      " No generates .swp files
 set nowritebackup " No generates .swp files
@@ -15,6 +17,8 @@ if filereadable(expand("~/.vimrc.bundles"))
 endif
 
 filetype plugin indent on
+
+execute pathogen#infect()
 
 augroup vimrcEx
   autocmd!

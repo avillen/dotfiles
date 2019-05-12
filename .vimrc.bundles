@@ -1,15 +1,18 @@
 call plug#begin('~/.vim/bundle')
 
-Plug 'ctrlpvim/ctrlp.vim'
-Plug 'elixir-lang/vim-elixir'
-Plug 'fatih/vim-go'
-Plug 'janko-m/vim-test'
-Plug 'slim-template/vim-slim'
-Plug 'tpope/vim-rails'
-Plug 'vim-ruby/vim-ruby'
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+Plug 'itchyny/lightline.vim'
+
 Plug 'janko-m/vim-test'
 Plug 'mhinz/vim-mix-format'
+Plug 'slim-template/vim-slim'
+
+Plug 'elixir-lang/vim-elixir'
+Plug 'tpope/vim-rails'
+Plug 'vim-ruby/vim-ruby'
+Plug 'fatih/vim-go'
 
 call plug#end()

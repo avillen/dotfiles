@@ -1,6 +1,5 @@
-alias ll="ls -al"
-alias mkdir="mkdir -p"
 alias h='history'
 alias tailf='tail -f'
 alias todo='$EDITOR ~/.todo'
-
+alias pg_start="launchctl load ~/Library/LaunchAgents/homebrew.mxcl.postg     resql.plist"
+alias pg_stop="launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.post     gresql.plist"

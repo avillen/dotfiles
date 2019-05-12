@@ -1,1 +1,0 @@
-/Users/alvarovillen/dotfiles/zsh/configs/post/path.zsh

@@ -17,3 +17,4 @@ rerun.txt
 tags
 tmp/**/*
 .vim/bundle/*
+gitconfig

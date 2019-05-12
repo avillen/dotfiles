@@ -3,6 +3,7 @@
 
 export ZSH=$HOME/.oh-my-zsh
 export PATH=/usr/local/bin:$PATH
+export PATH="$HOME/code/devkit/bin:$PATH"
 
 ###############################################################################
 # Zsh

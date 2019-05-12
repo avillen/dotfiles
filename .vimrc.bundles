@@ -1,18 +1,35 @@
 call plug#begin('~/.vim/bundle')
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" General
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
+
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-Plug 'itchyny/lightline.vim'
 
-Plug 'janko-m/vim-test'
-Plug 'mhinz/vim-mix-format'
+Plug 'itchyny/lightline.vim'
 Plug 'slim-template/vim-slim'
 
+Plug 'janko-m/vim-test'
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Elixir
 Plug 'elixir-lang/vim-elixir'
+Plug 'mhinz/vim-mix-format'
+Plug 'slashmili/alchemist.vim'
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Elm
+Plug 'elmcast/elm-vim'
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Ruby
 Plug 'tpope/vim-rails'
 Plug 'vim-ruby/vim-ruby'
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Go
 Plug 'fatih/vim-go'
 
 call plug#end()

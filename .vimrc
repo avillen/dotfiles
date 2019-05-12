@@ -47,6 +47,10 @@ augroup END
 
 let g:is_posix = 1
 
+" Silence bell
+set noerrorbells visualbell t_vb=
+autocmd GUIEnter * set visualbell t_vb=
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Tab completion
 

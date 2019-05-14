@@ -6,14 +6,6 @@ export PATH=/usr/local/bin:$PATH
 export PATH="$HOME/code/devkit/bin:$PATH"
 
 ###############################################################################
-# Zsh
-
-ZSH_THEME=geoffgarside
-source $ZSH/oh-my-zsh.sh
-
-plugins=(git asdf)
-
-###############################################################################
 # asdf
 
 . $HOME/.asdf/asdf.sh
@@ -24,3 +16,10 @@ plugins=(git asdf)
 
 [[ -f ~/.aliases ]] && source ~/.aliases
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+###############################################################################
+# Zsh
+
+ZSH_THEME=geoffgarside
+plugins=(git asdf)
+source $ZSH/oh-my-zsh.sh

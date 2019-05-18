@@ -5,6 +5,7 @@ remove_old_dotfiles(){
 
   rm $HOME/.aliases
   rm $HOME/.gitignore
+  rm $HOME/.tmux.conf
   rm $HOME/.vimrc
   rm $HOME/.vimrc.bundles
   rm $HOME/.zshrc
@@ -21,8 +22,8 @@ create_sym_lynk(){
   mkdir $HOME/dotfiles/.vim/bundle
 
   ln -s $HOME/dotfiles/.aliases ~/.aliases
-  ln -s $HOME/dotfiles/.git ~/.git
   ln -s $HOME/dotfiles/.gitignore ~/.gitignore
+  ln -s $HOME/dotfiles/.tmux.conf ~/.tmux.conf
   ln -s $HOME/dotfiles/.vim ~/.vim
   ln -s $HOME/dotfiles/.vimrc ~/.vimrc
   ln -s $HOME/dotfiles/.vimrc.bundles ~/.vimrc.bundles

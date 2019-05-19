@@ -1,21 +1,25 @@
 ###############################################################################
-# fix - (https://github.com/asdf-vm/asdf/issues/266)
+# Start with tmux
 
-autoload -Uz compinit
-compinit
-
-. $HOME/.asdf/asdf.sh
-. $HOME/.asdf/completions/asdf.bash
+if [ -z "$TMUX" ]; then
+  tmux new-session -A -s "$USER"
+fi
 
 ###############################################################################
-# Paths
+# Variables
 
 export ZSH=$HOME/.oh-my-zsh
 export PATH=/usr/local/bin:$PATH
 export PATH="$HOME/code/devkit/bin:$PATH"
+export PATH="$HOME/.gem/bin:$PATH"
+export EDITOR=vim
 
 ###############################################################################
 # asdf
+
+# fix - (https://github.com/asdf-vm/asdf/issues/266)
+autoload -Uz compinit
+compinit
 
 . $HOME/.asdf/asdf.sh
 . $HOME/.asdf/completions/asdf.bash
@@ -36,12 +40,5 @@ source $ZSH/oh-my-zsh.sh
 ###############################################################################
 # Boot commands
 
-tmux has-session -t random
-if [ $? != 0 ]
-then
-  tmux new-session -s random
-fi
-tmux attach -t random
-
-touch todo && less todo
+# touch todo && less todo
 

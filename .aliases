@@ -1,5 +1,10 @@
 alias h='history'
 alias tailf='tail -f'
-alias todo='$EDITOR ~/.todo'
-alias pg_start="launchctl load ~/Library/LaunchAgents/homebrew.mxcl.postg     resql.plist"
-alias pg_stop="launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.post     gresql.plist"
+
+alias todo='$EDITOR ~/todo'
+alias mux='tmuxinator'
+alias ism='iex -S mix'
+
+alias pg_start="launchctl load ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist"
+alias pg_stop="launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist"
+

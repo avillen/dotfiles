@@ -1,6 +1,33 @@
-1. Install zsh: `https://github.com/robbyrussell/oh-my-zsh/wiki/Installing-ZSH`
-2. Install oh-my-zsh: `https://github.com/robbyrussell/oh-my-zsh`
-3. Install vim and run `:PluginInstall`
-4. Install Ag: `brew install the_silver_searcher`
-5. Run `source ~/.zshrc`
+# Install
+
+***zsh***
+```sh
+https://github.com/robbyrussell/oh-my-zsh/wiki/Installing-ZSH
+```
+
+***oh-my-zsh***
+```sh
+https://github.com/robbyrussell/oh-my-zsh
+```
+
+***Ag***
+```sh
+brew install the_silver_searcher
+```
+
+***vim and run***
+```sh
+:PluginInstall
+```
+
+***tmux***
+```sh
+brew install tmux
+brew install tmate
+gem install tmuxinator
+```
+
+# Run
+
+`source ~/.zshrc`
 

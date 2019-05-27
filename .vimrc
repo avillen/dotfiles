@@ -85,6 +85,9 @@ nnoremap <C-l> <C-w>l
 " Use fzf with CtrlP
 map <C-p> :Files<CR>
 
+" Copy current path location (Copy short / Copy long path)
+nmap yp :let @*=expand("%")<CR>
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " NerdTree
 

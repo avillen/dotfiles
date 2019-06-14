@@ -3,8 +3,10 @@ alias tailf='tail -f'
 
 alias todo='$EDITOR ~/todo'
 alias mux='tmuxinator'
-alias ism='iex -S mix'
+alias d='TZ=UTC date +%F:%X'
 
 alias pg_start="launchctl load ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist"
 alias pg_stop="launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist"
 
+alias ism='iex -S mix'
+alias mt='mix test'

@@ -88,6 +88,10 @@ map <C-p> :Files<CR>
 " Copy current path location (Copy short / Copy long path)
 nmap yp :let @*=expand("%")<CR>
 
+" Map :W to :w
+cnoreabbrev <expr> W ((getcmdtype() is# ':' && getcmdline() is# 'W')?('w'):('W'))
+
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " NerdTree
 

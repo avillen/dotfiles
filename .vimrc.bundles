@@ -12,6 +12,7 @@ Plug 'itchyny/lightline.vim'
 Plug 'slim-template/vim-slim'
 
 Plug 'janko-m/vim-test'
+Plug 'tpope/vim-fugitive'
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Elixir
@@ -31,5 +32,6 @@ Plug 'vim-ruby/vim-ruby'
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Go
 Plug 'fatih/vim-go'
+Plug 'fatih/vim-hclfmt'
 
 call plug#end()

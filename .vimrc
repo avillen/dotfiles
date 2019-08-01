@@ -92,6 +92,22 @@ nmap yp :let @*=expand("%")<CR>
 cnoreabbrev <expr> W ((getcmdtype() is# ':' && getcmdline() is# 'W')?('w'):('W'))
 
 
+"fugitive {{{ "
+nmap <silent> <leader>-  :Gstatus<cr><c-n>
+nmap <silent> <leader>gb :Gblame<cr>
+nmap <silent> <leader>gd :Gvdiff<cr>
+nmap <silent> <leader>gg :Gbrowse<cr>
+
+xmap <silent> <leader>gg :Gbrowse<cr>
+xmap <silent> <leader>gb :Gblame<cr>
+" }}} fugitive "
+
+source ~/.vimrc_secrets
+" fugitive-gitlab {{{ "
+let g:fugitive_gitlab_domains = [gitlab_domain]
+" }}} fugitive-gitlab "
+
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " NerdTree
 

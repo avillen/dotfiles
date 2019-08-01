@@ -34,8 +34,18 @@ compinit
 # Zsh
 
 ZSH_THEME=geoffgarside
-plugins=(git asdf)
+plugins=(
+  asdf
+  elixir
+  git
+)
 source $ZSH/oh-my-zsh.sh
+
+###############################################################################
+# aliases
+
+[[ -f ~/.aliases ]] && source ~/.aliases
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 ###############################################################################
 # Boot commands

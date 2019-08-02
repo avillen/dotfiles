@@ -105,6 +105,7 @@ xmap <silent> <leader>gb :Gblame<cr>
 source ~/.vimrc_secrets
 " fugitive-gitlab {{{ "
 let g:fugitive_gitlab_domains = [gitlab_domain]
+let g:gitlab_api_keys = gitlab_api_keys
 " }}} fugitive-gitlab "
 
 

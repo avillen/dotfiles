@@ -2,6 +2,8 @@ call plug#begin('~/.vim/bundle')
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " General
+Plug 'morhetz/gruvbox' " Theme
+
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 

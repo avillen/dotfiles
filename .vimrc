@@ -35,7 +35,7 @@ endif
 " Style
 
 syntax on
-colorscheme desert
+colorscheme gruvbox
 filetype plugin indent on
 
 " Set syntax highlighting for specific file types

@@ -91,12 +91,11 @@ noremap <Right> :vertical:resize +5<CR>
 " Use fzf with CtrlP
 map <C-p> :Files<CR>
 
-" Copy current path location (Copy short / Copy long path)
+" Copy current path location
 nmap yp :let @*=expand("%")<CR>
 
 " Map :W to :w
 cnoreabbrev <expr> W ((getcmdtype() is# ':' && getcmdline() is# 'W')?('w'):('W'))
-
 
 "fugitive {{{ "
 nmap <silent> <leader>gs  :Gstatus<cr><c-n>

@@ -82,6 +82,12 @@ nnoremap <C-k> <C-w>k
 nnoremap <C-h> <C-w>h
 nnoremap <C-l> <C-w>l
 
+" Resize
+noremap <Up> :resize +5<CR>
+noremap <Down> :resize -5<CR>
+noremap <Left> :vertical:resize -5<CR>
+noremap <Right> :vertical:resize +5<CR>
+
 " Use fzf with CtrlP
 map <C-p> :Files<CR>
 

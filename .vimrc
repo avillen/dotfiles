@@ -99,12 +99,16 @@ cnoreabbrev <expr> W ((getcmdtype() is# ':' && getcmdline() is# 'W')?('w'):('W')
 
 
 "fugitive {{{ "
-nmap <silent> <leader>-  :Gstatus<cr><c-n>
-nmap <silent> <leader>gb :Gblame<cr>
+nmap <silent> <leader>gs  :Gstatus<cr><c-n>
 nmap <silent> <leader>gd :Gvdiff<cr>
-nmap <silent> <leader>gg :Gbrowse<cr>
+nmap <silent> <leader>gc :Gcommit -v<cr>
+nmap <silent> <leader>ga :Git add -p<cr>
+nmap <silent> <leader>gc! :Gcommit --amend<cr>
+nmap <silent> <leader>gp :Gpush<cr>
 
+nmap <silent> <leader>gg :Gbrowse<cr>
 xmap <silent> <leader>gg :Gbrowse<cr>
+nmap <silent> <leader>gb :Gblame<cr>
 xmap <silent> <leader>gb :Gblame<cr>
 " }}} fugitive "
 

@@ -10,9 +10,10 @@ fi
 
 export ZSH=$HOME/.oh-my-zsh
 export PATH=/usr/local/bin:$PATH
-export PATH="$HOME/code/devkit/bin:$PATH"
 export PATH="$HOME/.gem/bin:$PATH"
-export EDITOR=vim
+export PATH="$PATH:$HOME/development/flutter/bin"
+
+exportEDITOR=vim
 
 # elixir
 export ERL_AFLAGS="-kernel shell_history enabled"

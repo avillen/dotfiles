@@ -95,6 +95,12 @@ map <C-p> :Files<CR>
 " Copy current path location
 nmap yp :let @*=expand("%")<CR>
 
+" Copy/Paste gvim
+vmap <C-c> "+yi
+vmap <C-x> "+c
+vmap <C-v> c<ESC>"+p
+imap <C-v> <C-r><C-o>+
+
 " Map :W to :w
 cnoreabbrev <expr> W ((getcmdtype() is# ':' && getcmdline() is# 'W')?('w'):('W'))
 

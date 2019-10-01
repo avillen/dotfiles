@@ -14,6 +14,9 @@ export PATH="$HOME/code/devkit/bin:$PATH"
 export PATH="$HOME/.gem/bin:$PATH"
 export EDITOR=vim
 
+# elixir
+export ERL_AFLAGS="-kernel shell_history enabled"
+
 ###############################################################################
 # asdf
 

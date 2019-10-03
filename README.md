@@ -27,6 +27,11 @@ brew install tmate
 gem install tmuxinator
 ```
 
+***autojump***
+```sh
+brew install autojump
+```
+
 # Run
 
 `source ~/.zshrc`

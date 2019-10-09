@@ -60,3 +60,7 @@ source $ZSH/oh-my-zsh.sh
 
 # touch todo && less todo
 
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="/home/av/.sdkman"
+[[ -s "/home/av/.sdkman/bin/sdkman-init.sh" ]] && source "/home/av/.sdkman/bin/sdkman-init.sh"

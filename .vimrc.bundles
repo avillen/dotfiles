@@ -19,6 +19,10 @@ Plug 'tpope/vim-rhubarb'
 Plug 'shumphrey/fugitive-gitlab.vim'
 Plug 'airblade/vim-gitgutter'
 
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Elixir
 Plug 'elixir-lang/vim-elixir'

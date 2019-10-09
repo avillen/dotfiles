@@ -137,3 +137,13 @@ map <C-o> :NERDTreeToggle<CR>
 
 let g:mix_format_on_save = 1
 
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" UltiSnippet
+let g:UltiSnipsSnippetsDir = "~/.snippets/ultisnips"
+let g:UltiSnipsSnippetDirectories = ["/Users/alvarovillen/.snippets/ultisnips"]
+let g:UltiSnipsExpandTrigger="<leader><tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+let g:UltiSnipsEditSplit="vertical"
+

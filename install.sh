@@ -9,6 +9,7 @@ remove_old_dotfiles(){
   rm $HOME/.vimrc
   rm $HOME/.vimrc.bundles
   rm $HOME/.zshrc
+  rm -rf $HOME/.snippets
   rm -rf $HOME/.zsh
   rm -rf $HOME/.git
   rm -rf $HOME/.vim
@@ -29,6 +30,7 @@ create_sym_lynk(){
   ln -s $HOME/dotfiles/.vimrc.bundles ~/.vimrc.bundles
   ln -s $HOME/dotfiles/.zsh ~/.zsh
   ln -s $HOME/dotfiles/.zshrc ~/.zshrc
+  ln -s $HOME/dotfiles/.snippets ~/.snippets
 
   echo "New dotfiles created"
 }

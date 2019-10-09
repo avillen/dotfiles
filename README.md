@@ -29,7 +29,7 @@ gem install tmuxinator
 
 ***autojump***
 ```sh
-brew install autojump
+sudo apt-get install autojump.sh
 ```
 
 # Run

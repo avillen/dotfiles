@@ -141,7 +141,7 @@ let g:mix_format_on_save = 1
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " UltiSnippet
 let g:UltiSnipsSnippetsDir = "~/.snippets/ultisnips"
-let g:UltiSnipsSnippetDirectories = ["/Users/alvarovillen/.snippets/ultisnips"]
+let g:UltiSnipsSnippetDirectories = ["/home/av/.snippets/ultisnips"]
 let g:UltiSnipsExpandTrigger="<leader><tab>"
 let g:UltiSnipsJumpForwardTrigger="<leader><tab>"
 let g:UltiSnipsJumpBackwardTrigger="<c-b>"

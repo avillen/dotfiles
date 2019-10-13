@@ -11,11 +11,3 @@ def complete(t, opts):
     return opts[0]
   return '[' + '|'.join(opts) + ']'
 
-
-######################################################################
-# Insert spaces
-#
-# n - Number of spaces
-#
-def tab(n):
-  return " " * n

@@ -32,6 +32,11 @@ gem install tmuxinator
 sudo apt-get install autojump.sh
 ```
 
+***grip***
+```sh
+sudo apt-get install grip
+```
+
 # Run
 
 `source ~/.zshrc`

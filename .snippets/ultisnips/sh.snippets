@@ -1,0 +1,56 @@
+snippet doc "Documentation header" b
+################################################################################
+# ${1}
+#
+# Input:
+# $ 1 - ${2}
+# $ 2 - ${3}
+#
+endsnippet
+
+snippet init "Basic template" b
+#!/bin/sh
+# vim: ai:ts=8:sw=8:noet
+
+################################################################################
+# Prints a help
+#
+help() {
+  echo " -${1:a} <${2:Description}>"
+  echo " -${3:b} <${4:Description}>"
+  echo " -${5:c} <${6:Description}>"
+
+  exit 1
+}
+
+
+################################################################################
+# Main
+#
+main() {
+  # Default values
+  $1=${7:0}
+  $3=${8:0}
+  $5=${9:0}
+
+  while getopts ":$1:$3:$5" o; do
+    case "${o}" in
+      $1)
+         $1="${OPTARGS:-$$1}"
+         ;;
+      $3)
+         $3="${OPTARGS:-$$3}"
+         ;;
+      $5)
+         $5="${OPTARGS:-$$5}"
+         ;;
+      *)
+         help
+         ;;
+    esac
+  done
+  shift $((OPTIOND-1))
+
+  $0
+}
+endsnippet

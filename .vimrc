@@ -143,7 +143,7 @@ let g:mix_format_on_save = 1
 let g:UltiSnipsSnippetsDir = "~/.snippets/ultisnips"
 let g:UltiSnipsSnippetDirectories = ["/Users/alvarovillen/.snippets/ultisnips"]
 let g:UltiSnipsExpandTrigger="<leader><tab>"
-let g:UltiSnipsJumpForwardTrigger="<c-b>"
-let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+let g:UltiSnipsJumpForwardTrigger="<leader><tab>"
+let g:UltiSnipsJumpBackwardTrigger="<c-b>"
 let g:UltiSnipsEditSplit="vertical"
 

@@ -2,44 +2,12 @@
 
 global !p
 
-def tab(n):
-  return " " * n
+from snippet_sh import (
+  build_case,
+  build_opts,
+  build_helper
+)
 
-def build_opts(t):
-  if t:
-    lines = t.splitlines()
-    if lines:
-      result = ""
-      for line in lines:
-        result += ":" + str.strip(line).split('=', 1)[0]
-      return result
-    return ":" + t
-  else:
-    return ":"
-
-def build_case(t):
-  if t:
-    lines = t.splitlines()
-    if len(lines) > 0:
-      result = ""
-      for line in lines:
-        aux = str.strip(line).split('=', 1)[0]
-        result += tab(6) + aux + ")\n"
-        result += tab(8) + aux + "=\"${OPTARGS:-$" + aux + "}\"\n"
-        result += tab(8) + ";;\n"
-      return result
-    return ""
-
-def build_helper(t):
-  if t:
-    lines = t.splitlines()
-    if len(lines) > 0:
-      result = ""
-      for line in lines:
-        aux = str.strip(line).split('=', 1)[0]
-        result += tab(2) + "echo \" -" + aux + " <>\"" + "\n"
-      return result
-    return ""
 endglobal
 
 

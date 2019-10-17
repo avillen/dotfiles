@@ -1,7 +1,7 @@
 #################### GLOBALS ####################
 
 global !p
-from common import (
+from snippet_helpers import (
   complete
 )
 endglobal
@@ -13,16 +13,12 @@ snippet io
 IO.puts("${1}`!p snip.rv = t[1]*10`")
 IO.inspect(${2:reason})
 IO.puts("${1}`!p snip.rv = t[1]*9`")
-
-$0
 endsnippet
 
-snippet "(.*)\.io" "IO.inspect(postfix)" r
+snippet "[^\s](.*)\.io" "IO.inspect(postfix)" r
 IO.puts("${1}`!p snip.rv = t[1]*10`")
 IO.inspect(${2:`!p snip.rv = match.group(1)`})
 IO.puts("${1}`!p snip.rv = t[1]*9`")
-
-$0
 endsnippet
 
 ### Logger
@@ -30,17 +26,13 @@ snippet log
 Logger.$1`!p
 snip.rv=complete(t[1], ['debug', 'info', 'warn', 'error'])
 `(inspect({__MODULE__, ${2:function_name}, ${3:reason}}))
-
-$0
 endsnippet
 
-snippet "(.*)\.log" "Logger.info(postfix)" r
-IO.puts("${1}`!p snip.rv = t[1]*10`")
-Logger.$2`!p
-snip.rv=complete(t[2], ['debug', 'info', 'warn', 'error'])
-`("[${3:DEBUG}]" <> inspect(${4:`!p snip.rv = match.group(1)`}))
-IO.puts("${1}`!p snip.rv = t[1]*9`")
-
-$0
+snippet "[^\s](.*)\.log" "Logger.info(postfix)" r
+IO.puts("${4}`!p snip.rv = t[4]*10`")
+Logger.$1`!p
+snip.rv=complete(t[1], ['debug', 'info', 'warn', 'error'])
+`("[${2:DEBUG}] - " <> inspect(${3:`!p snip.rv = match.group(1)`}))
+IO.puts("${4}`!p snip.rv = t[4]*9`")
 endsnippet
 

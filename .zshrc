@@ -2,7 +2,7 @@
 # Start with tmux
 
 if [ -z "$TMUX" ]; then
-  tmux new-session -A -s "dev"
+  TERM=screen-256color-bce tmux new-session -A -s "dev"
 fi
 
 ###############################################################################

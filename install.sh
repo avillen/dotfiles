@@ -8,6 +8,7 @@ remove_old_dotfiles(){
   rm $HOME/.tmux.conf
   rm $HOME/.vimrc
   rm $HOME/.vimrc.bundles
+  rm $HOME/.vimrc.coc
   rm $HOME/.zshrc
   rm -rf $HOME/.snippets
   rm -rf $HOME/.zsh
@@ -28,6 +29,7 @@ create_sym_lynk(){
   ln -s $HOME/dotfiles/.vim ~/.vim
   ln -s $HOME/dotfiles/.vimrc ~/.vimrc
   ln -s $HOME/dotfiles/.vimrc.bundles ~/.vimrc.bundles
+  ln -s $HOME/dotfiles/.vimrc.coc ~/.vimrc.coc
   ln -s $HOME/dotfiles/.zsh ~/.zsh
   ln -s $HOME/dotfiles/.zshrc ~/.zshrc
   ln -s $HOME/dotfiles/.snippets ~/.snippets

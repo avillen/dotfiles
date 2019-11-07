@@ -15,7 +15,7 @@ IO.inspect(${2:reason})
 IO.puts("${1}`!p snip.rv = t[1]*9`")
 endsnippet
 
-snippet "[^\s](.*)\.io" "IO.inspect(postfix)" r
+snippet "[^\S]*(.*)\.io" "IO.inspect(postfix)" r
 IO.puts("${1}`!p snip.rv = t[1]*10`")
 IO.inspect(${2:`!p snip.rv = match.group(1)`})
 IO.puts("${1}`!p snip.rv = t[1]*9`")
@@ -28,7 +28,7 @@ snip.rv=complete(t[1], ['debug', 'info', 'warn', 'error'])
 `(inspect({__MODULE__, ${2:function_name}, ${3:reason}}))
 endsnippet
 
-snippet "[^\s](.*)\.log" "Logger.info(postfix)" r
+snippet "[^\S]*(.*)\.log" "Logger.info(postfix)" r
 IO.puts("${4}`!p snip.rv = t[4]*10`")
 Logger.$1`!p
 snip.rv=complete(t[1], ['debug', 'info', 'warn', 'error'])

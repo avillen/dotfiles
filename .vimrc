@@ -93,8 +93,8 @@ noremap <Right> :vertical:resize +5<CR>
 map <C-p> :Files<CR>
 
 " Switch between buffers
-map <C-K> :bprev<CR>
-map <C-J> :bnext<CR>
+map <S-K> :bprev<CR>
+map <S-J> :bnext<CR>
 
 " Copy current path location
 nmap yp :let @*=expand("%")<CR>

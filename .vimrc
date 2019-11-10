@@ -92,6 +92,10 @@ noremap <Right> :vertical:resize +5<CR>
 " Use fzf with CtrlP
 map <C-p> :Files<CR>
 
+" Switch between buffers
+map <C-K> :bprev<CR>
+map <C-J> :bnext<CR>
+
 " Copy current path location
 nmap yp :let @*=expand("%")<CR>
 

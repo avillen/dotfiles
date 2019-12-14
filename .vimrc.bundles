@@ -47,4 +47,8 @@ Plug 'vim-ruby/vim-ruby'
 Plug 'fatih/vim-go'
 Plug 'fatih/vim-hclfmt'
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Dart
+Plug 'dart-lang/dart-vim-plugin'
+
 call plug#end()

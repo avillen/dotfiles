@@ -92,10 +92,6 @@ noremap <Right> :vertical:resize +5<CR>
 " Use fzf with CtrlP
 map <C-p> :Files<CR>
 
-" Switch between buffers
-map <S-K> :bprev<CR>
-map <S-J> :bnext<CR>
-
 " Copy current path location
 nmap yp :let @*=expand("%")<CR>
 
@@ -141,6 +137,11 @@ map <C-o> :NERDTreeToggle<CR>
 
 let g:mix_format_on_save = 1
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Dart
+
+let g:mix_format_on_save = 1
+let g:dart_format_on_save = 1
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " UltiSnippet

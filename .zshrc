@@ -42,6 +42,7 @@ plugins=(
   asdf
   elixir
   git
+  flutter
 )
 source $ZSH/oh-my-zsh.sh
 

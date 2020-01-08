@@ -2,15 +2,4 @@ alias h='history'
 alias tailf='tail -f'
 
 alias todo='$EDITOR ~/todo'
-alias mux='tmuxinator'
-alias d='TZ=UTC date +%F:%X'
 alias agrep='alias | grep'
-
-alias pg_start="launchctl load ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist"
-alias pg_stop="launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist"
-
-alias m='gvim .'
-
-alias mysql_run="sudo docker run -d -p 3306:3306 --name mysqldb -e MYSQL_ALLOW_EMPTY_PASSWORD=yes mysql"
-alias mysql_exec="sudo docker exec -it mysqldb mysql"
-alias mysql_stop="sudo docker stop mysqlDb"

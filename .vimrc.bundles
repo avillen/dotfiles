@@ -21,6 +21,7 @@ Plug 'airblade/vim-gitgutter'
 
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -46,5 +47,10 @@ Plug 'vim-ruby/vim-ruby'
 " Go
 Plug 'fatih/vim-go'
 Plug 'fatih/vim-hclfmt'
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Dart/Flutter
+Plug 'dart-lang/dart-vim-plugin'
+Plug 'thosakwe/vim-flutter'
 
 call plug#end()

@@ -10,9 +10,10 @@ fi
 
 export ZSH=$HOME/.oh-my-zsh
 export PATH=/usr/local/bin:$PATH
-export PATH="$HOME/code/devkit/bin:$PATH"
 export PATH="$HOME/.gem/bin:$PATH"
-export EDITOR=vim
+export PATH="$PATH:$HOME/development/flutter/bin"
+
+exportEDITOR=vim
 
 # elixir
 export ERL_AFLAGS="-kernel shell_history enabled"
@@ -41,13 +42,13 @@ plugins=(
   asdf
   elixir
   git
+  flutter
 )
 source $ZSH/oh-my-zsh.sh
 
 ###############################################################################
 # Autojump
-
-[ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
+. /usr/share/autojump/autojump.sh
 
 ###############################################################################
 # aliases
@@ -60,3 +61,7 @@ source $ZSH/oh-my-zsh.sh
 
 # touch todo && less todo
 
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="/home/av/.sdkman"
+[[ -s "/home/av/.sdkman/bin/sdkman-init.sh" ]] && source "/home/av/.sdkman/bin/sdkman-init.sh"

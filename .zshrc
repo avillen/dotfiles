@@ -13,7 +13,7 @@ export PATH=/usr/local/bin:$PATH
 export PATH="$HOME/.gem/bin:$PATH"
 export PATH="$PATH:$HOME/development/flutter/bin"
 
-exportEDITOR=vim
+export EDITOR=vim
 
 # elixir
 export ERL_AFLAGS="-kernel shell_history enabled"

@@ -135,6 +135,12 @@ let g:dart_format_on_save = 1
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Elm
+
+let g:elm_format_autosave = 1
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " UltiSnippet
 let g:UltiSnipsSnippetsDir = "~/.snippets/ultisnips"
 let g:UltiSnipsSnippetDirectories = ["/home/av/.snippets/ultisnips"]

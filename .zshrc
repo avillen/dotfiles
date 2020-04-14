@@ -37,7 +37,7 @@ compinit
 ###############################################################################
 # Zsh
 
-ZSH_THEME=geoffgarside
+ZSH_THEME=lambder
 plugins=(
   asdf
   elixir

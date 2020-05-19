@@ -22,7 +22,7 @@ Plug 'tpope/vim-rhubarb'
 Plug 'elixir-lang/vim-elixir'
 Plug 'mhinz/vim-mix-format'
 
-" Ruby
-Plug 'vim-ruby/vim-ruby'
+" HTML-CSS
+Plug 'mattn/emmet-vim'
 
 call plug#end()

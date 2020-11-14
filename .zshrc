@@ -11,9 +11,10 @@ fi
 export ZSH=$HOME/.oh-my-zsh
 export PATH=/usr/local/bin:$PATH
 export PATH="$HOME/.gem/bin:$PATH"
-export PATH="$PATH:$HOME/development/flutter/bin"
-
 export EDITOR=vim
+
+# fzf
+export FZF_DEFAULT_COMMAND='ag --nocolor --ignore _build -g ""'
 
 # elixir
 export ERL_AFLAGS="-kernel shell_history enabled"
@@ -21,18 +22,10 @@ export ERL_AFLAGS="-kernel shell_history enabled"
 ###############################################################################
 # asdf
 
-# fix - (https://github.com/asdf-vm/asdf/issues/266)
-autoload -Uz compinit
-compinit
-
 . $HOME/.asdf/asdf.sh
-. $HOME/.asdf/completions/asdf.bash
 
-###############################################################################
-# aliases
-
-[[ -f ~/.aliases ]] && source ~/.aliases
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+fpath=(${ASDF_DIR}/completions $fpath)
+autoload -Uz compinit && compinit
 
 ###############################################################################
 # Zsh
@@ -42,7 +35,7 @@ plugins=(
   asdf
   elixir
   git
-  flutter
+  kubectl
 )
 source $ZSH/oh-my-zsh.sh
 
@@ -55,13 +48,17 @@ source $ZSH/oh-my-zsh.sh
 
 [[ -f ~/.aliases ]] && source ~/.aliases
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+[ -f /usr/local/bin/kubectl ] && source <(kubectl completion zsh)
 
 ###############################################################################
 # Boot commands
 
 # touch todo && less todo
 
-
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="/home/av/.sdkman"
 [[ -s "/home/av/.sdkman/bin/sdkman-init.sh" ]] && source "/home/av/.sdkman/bin/sdkman-init.sh"
+
+
+autoload -U +X bashcompinit && bashcompinit
+complete -o nospace -C /usr/bin/terraform terraform

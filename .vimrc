@@ -29,6 +29,13 @@ if filereadable(expand("~/.vimrc.bundles"))
   source ~/.vimrc.bundles
 endif
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Load coc
+
+if filereadable(expand("~/.vimrc.coc"))
+  source ~/.vimrc.coc
+endif
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Style
@@ -62,6 +69,9 @@ noremap <Up> :resize +5<CR>
 noremap <Down> :resize -5<CR>
 noremap <Left> :vertical:resize -5<CR>
 noremap <Right> :vertical:resize +5<CR>
+
+" Stop highlight when searching
+nnoremap <silent> <CR> :nohlsearch<CR><CR>
 
 " Use fzf with CtrlP
 map <C-p> :Files<CR>
@@ -97,15 +107,11 @@ map <C-o> :NERDTreeToggle<CR>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Elixir
-
+" Formatters
 let g:mix_format_on_save = 1
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Elm
-
 let g:elm_format_autosave = 1
+let g:terraform_fmt_on_save=1
+let g:go_fmt_autosave = 1
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

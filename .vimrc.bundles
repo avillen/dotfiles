@@ -13,6 +13,11 @@ Plug 'itchyny/lightline.vim'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 
+" coc
+Plug 'neoclide/coc.nvim', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
+Plug 'elixir-lsp/coc-elixir', {'do': 'yarn install && yarn prepack'}
+Plug 'iamcco/coc-tailwindcss',  {'do': 'yarn install --frozen-lockfile && yarn run build'}
+
 Plug 'tpope/vim-fugitive'
 Plug 'shumphrey/fugitive-gitlab.vim'
 Plug 'tpope/vim-rhubarb'
@@ -20,9 +25,16 @@ Plug 'tpope/vim-rhubarb'
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Elixir
 Plug 'elixir-lang/vim-elixir'
-Plug 'mhinz/vim-mix-format'
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Go
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
 " HTML-CSS
 Plug 'mattn/emmet-vim'
+Plug 'leafgarland/typescript-vim'
+
+" Systems
+Plug 'hashivim/vim-terraform'
 
 call plug#end()

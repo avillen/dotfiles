@@ -3,54 +3,38 @@ call plug#begin('~/.vim/bundle')
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " General
 Plug 'morhetz/gruvbox' " Theme
-
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
-
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
-
-Plug 'itchyny/lightline.vim'
-Plug 'slim-template/vim-slim'
-
-Plug 'janko-m/vim-test'
-Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rhubarb'
-Plug 'shumphrey/fugitive-gitlab.vim'
 Plug 'airblade/vim-gitgutter'
-
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+Plug 'itchyny/lightline.vim'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
+" coc
+Plug 'neoclide/coc.nvim', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
+Plug 'elixir-lsp/coc-elixir', {'do': 'yarn install && yarn prepack'}
+Plug 'iamcco/coc-tailwindcss',  {'do': 'yarn install --frozen-lockfile && yarn run build'}
+
+Plug 'tpope/vim-fugitive'
+Plug 'shumphrey/fugitive-gitlab.vim'
+Plug 'tpope/vim-rhubarb'
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Elixir
 Plug 'elixir-lang/vim-elixir'
-Plug 'mhinz/vim-mix-format'
-Plug 'slashmili/alchemist.vim'
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Kotlin
-Plug 'udalov/kotlin-vim'
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Elm
-Plug 'elmcast/elm-vim'
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Ruby
-Plug 'tpope/vim-rails'
-Plug 'vim-ruby/vim-ruby'
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Go
-Plug 'fatih/vim-go'
-Plug 'fatih/vim-hclfmt'
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Dart/Flutter
-Plug 'dart-lang/dart-vim-plugin'
-Plug 'thosakwe/vim-flutter'
+" HTML-CSS
+Plug 'mattn/emmet-vim'
+Plug 'leafgarland/typescript-vim'
+
+" Systems
+Plug 'hashivim/vim-terraform'
 
 call plug#end()

@@ -1,11 +1,2 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =9
-let g:netrw_dirhist_1='/home/av/code/hathier_proj/hathier'
-let g:netrw_dirhist_2='/home/av/code/hathier_proj/hathier/deps'
-let g:netrw_dirhist_3='/home/av/code/hathier_proj/hathier'
-let g:netrw_dirhist_4='/home/av/code/hathier_proj/hathier/apps'
-let g:netrw_dirhist_5='/home/av/code/hathier_proj/hathier/apps/tiers'
-let g:netrw_dirhist_6='/home/av/code/hathier_proj/hathier/apps/tiers/lib'
-let g:netrw_dirhist_7='/home/av/code/hathier_proj/hathier/apps/tiers'
-let g:netrw_dirhist_8='/home/av/code/hathier_proj/hathier/apps'
-let g:netrw_dirhist_9='/home/av/code/hathier_proj/hathier'
+let g:netrw_dirhist_cnt =0

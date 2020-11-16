@@ -1,5 +1,4 @@
 alias h='history'
-alias tailf='tail -f'
-
 alias todo='$EDITOR ~/todo'
 alias agrep='alias | grep'
+alias vim='nvim'

@@ -30,8 +30,15 @@ Plug 'elixir-lang/vim-elixir'
 " Go
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Ruby
+Plug 'vim-ruby/vim-ruby'
+Plug 'tpope/vim-rails'
+
 " HTML-CSS
 Plug 'mattn/emmet-vim'
+Plug 'pangloss/vim-javascript'
+Plug 'HerringtonDarkholme/yats.vim'
 Plug 'leafgarland/typescript-vim'
 
 " Systems

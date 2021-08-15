@@ -11,6 +11,7 @@ fi
 export ZSH=$HOME/.oh-my-zsh
 export PATH=/usr/local/bin:$PATH
 export PATH="$HOME/.gem/bin:$PATH"
+export PATH="$PATH:/usr/local/go/bin"
 export EDITOR=vim
 
 # fzf
@@ -18,6 +19,13 @@ export FZF_DEFAULT_COMMAND='ag --nocolor --ignore _build -g ""'
 
 # elixir
 export ERL_AFLAGS="-kernel shell_history enabled"
+
+# android
+export ANDROID_HOME=$HOME/Android/Sdk
+export PATH=$PATH:$ANDROID_HOME/emulator
+export PATH=$PATH:$ANDROID_HOME/tools
+export PATH=$PATH:$ANDROID_HOME/tools/bin
+export PATH=$PATH:$ANDROID_HOME/platform-tools
 
 ###############################################################################
 # asdf
@@ -35,7 +43,9 @@ plugins=(
   asdf
   elixir
   git
+  golang
   kubectl
+  rails
 )
 source $ZSH/oh-my-zsh.sh
 

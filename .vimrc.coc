@@ -15,7 +15,7 @@ set updatetime=300
 " Don't pass messages to |ins-completion-menu|.
 set shortmess+=c
 
-let g:coc_global_extensions = ['coc-elixir', 'coc-diagnostic', 'coc-tsserver']
+let g:coc_global_extensions = ['coc-elixir', 'coc-diagnostic', 'coc-tsserver', 'coc-go']
 
 " Use tab for trigger completion with characters ahead and navigate.
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by

@@ -12,6 +12,7 @@ export ZSH=$HOME/.oh-my-zsh
 export PATH=/usr/local/bin:$PATH
 export PATH="$HOME/.gem/bin:$PATH"
 export PATH="$PATH:/usr/local/go/bin"
+export PATH="$PATH:/$HOME/go/bin"
 export EDITOR=vim
 
 # fzf

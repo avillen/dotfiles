@@ -2,3 +2,4 @@ alias h='history'
 alias todo='$EDITOR ~/todo'
 alias agrep='alias | grep'
 alias vim='nvim'
+alias python=python3

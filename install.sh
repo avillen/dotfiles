@@ -23,6 +23,7 @@ create_sym_lynk(){
   ln -s $HOME/dotfiles/.zshrc ~/.zshrc
   ln -s $HOME/dotfiles/.snippets ~/.snippets
   ln -s $HOME/dotfiles/init.lua ~/.config/nvim/init.lua
+  ln -s $HOME/dotfiles/lua ~/.config/nvim/lua
 
   echo "New dotfiles created"
 }

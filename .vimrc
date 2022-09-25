@@ -88,9 +88,9 @@ cnoreabbrev <expr> W ((getcmdtype() is# ':' && getcmdline() is# 'W')?('w'):('W')
 
 " Fugitive
 nmap <silent> <leader>gd :Gvdiff<cr>
-nmap <silent> <leader>gg :Gbrowse<cr>
-xmap <silent> <leader>gg :Gbrowse<cr>
-nmap <silent> <leader>gb :Gblame<cr>
+nmap <silent> <leader>gg :GBrowse<cr>
+xmap <silent> <leader>gg :GBrowse<cr>
+nmap <silent> <leader>gb :Git blame<cr>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -109,7 +109,6 @@ map <C-o> :NERDTreeToggle<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Formatters
 let g:mix_format_on_save = 1
-let g:elm_format_autosave = 1
 let g:terraform_fmt_on_save=1
 let g:go_fmt_autosave = 1
 

@@ -5,7 +5,6 @@ call plug#begin('~/.vim/bundle')
 Plug 'morhetz/gruvbox' " Theme
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'tpope/vim-rhubarb'
 Plug 'airblade/vim-gitgutter'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
@@ -14,9 +13,9 @@ Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 
 " coc
-Plug 'neoclide/coc.nvim', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'elixir-lsp/coc-elixir', {'do': 'yarn install && yarn prepack'}
-Plug 'iamcco/coc-tailwindcss',  {'do': 'yarn install --frozen-lockfile && yarn run build'}
+Plug 'yaegassy/coc-tailwindcss3', {'do': 'yarn install --frozen-lockfile'}
 
 Plug 'tpope/vim-fugitive'
 Plug 'shumphrey/fugitive-gitlab.vim'
@@ -24,7 +23,7 @@ Plug 'tpope/vim-rhubarb'
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Elixir
-Plug 'elixir-lang/vim-elixir'
+Plug 'elixir-editors/vim-elixir'
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Go
@@ -35,12 +34,7 @@ Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'vim-ruby/vim-ruby'
 Plug 'tpope/vim-rails'
 
-" HTML-CSS
-Plug 'mattn/emmet-vim'
-Plug 'pangloss/vim-javascript'
-Plug 'HerringtonDarkholme/yats.vim'
-Plug 'leafgarland/typescript-vim'
-
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Systems
 Plug 'hashivim/vim-terraform'
 

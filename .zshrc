@@ -8,11 +8,15 @@ fi
 ###############################################################################
 # Variables
 
+export GOROOT=/usr/local/go
+
 export ZSH=$HOME/.oh-my-zsh
 export PATH=/usr/local/bin:$PATH
 export PATH="$HOME/.gem/bin:$PATH"
 export PATH="$PATH:/usr/local/go/bin"
 export PATH="$PATH:/$HOME/go/bin"
+export PATH="$PATH:$GOROOT/bin"
+
 export EDITOR=vim
 
 # fzf
@@ -60,6 +64,8 @@ source $ZSH/oh-my-zsh.sh
 [[ -f ~/.aliases ]] && source ~/.aliases
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 [ -f /usr/local/bin/kubectl ] && source <(kubectl completion zsh)
+[[ -s `brew --prefix`/etc/autojump.sh ]] && . `brew --prefix`/etc/autojump.sh
+
 
 ###############################################################################
 # Boot commands

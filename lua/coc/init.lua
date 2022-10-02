@@ -3,14 +3,13 @@ vim.opt.hidden = true
 
 -- Some servers have issues with backup files, see #649.
 vim.opt.backup = false
-
--- Some servers have issues with backup files, see #649.
 vim.opt.writebackup = false
 
 -- Give more space for displaying messages.
-vim.opt.cmdheight = 2 
+vim.opt.cmdheight = 2
 
--- Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable delays and poor user experience.
+-- Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
+-- delays and poor user experience.
 vim.opt.updatetime = 300
 
 -- Don't pass messages to |ins-completion-menu|.
@@ -25,27 +24,28 @@ vim.g.coc_global_extensions = {
 
 
 -- Insert <tab> when previous text is space, refresh completion if not.
-vim.cmd [[
-  function! CheckBackSpace() abort
-    let col = col('.') - 1
-    return !col || getline('.')[col - 1]  =~ '\s'
-  endfunction
-]]
+function _G.check_back_space()
+    local col = vim.fn.col('.') - 1
+    return col == 0 or vim.fn.getline('.'):sub(col, col):match('%s')
+end
 
-vim.cmd [[
-  inoremap <silent><expr> <TAB>
-    \ coc#pum#visible() ? coc#pum#next(1):
-    \ CheckBackSpace() ? "\<Tab>" :
-    \ coc#refresh()
-  inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
-  inoremap <expr> <cr> coc#pum#visible() ? coc#_select_confirm() : "\<CR>"
-]]
+local opts = {silent = true, noremap = true, expr = true}
+
+vim.api.nvim_set_keymap("i", "<CR>",
+                        [[coc#pum#visible() ? coc#pum#confirm() : "\<CR>"]], opts)
+
+vim.api.nvim_set_keymap("i", "<TAB>",
+                        'coc#pum#visible() ? coc#pum#next(1) : v:lua.check_back_space() ? "<TAB>" : coc#refresh()', opts)
+vim.api.nvim_set_keymap("i", "<S-TAB>",
+                        [[coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"]], opts)
 
 -- GoTo code navigation.
-vim.api.nvim_set_keymap("n", "gd", "<Plug>(coc-definition)", { silent = true })
-vim.api.nvim_set_keymap("n", "gy", "<Plug>(coc-type-definition)", { silent = true })
-vim.api.nvim_set_keymap("n", "gi", "<Plug>(coc-implementation)", { silent = true })
-vim.api.nvim_set_keymap("n", "gr", "<Plug>(coc-references)", { silent = true })
+local keyset = vim.keymap.set
+
+keyset("n", "gd", "<Plug>(coc-definition)", { silent = true })
+keyset("n", "gy", "<Plug>(coc-type-definition)", { silent = true })
+keyset("n", "gi", "<Plug>(coc-implementation)", { silent = true })
+keyset("n", "gr", "<Plug>(coc-references)", { silent = true })
 
 vim.cmd [[
   function! s:show_documentation()
@@ -55,10 +55,10 @@ vim.cmd [[
       call CocAction('doHover')
     endif
   endfunction
-]]
 
--- Use K to show documentation in preview window.
-vim.api.nvim_set_keymap("n", "K", ":call <SID>show_documentation()<CR>", { noremap = true, silent = true })
+  " Use K to show documentation in preview window.
+  nnoremap <silent> K :call <SID>show_documentation()<CR>
+]]
 
 vim.cmd [[
   " Highlight the symbol and its references when holding the cursor.

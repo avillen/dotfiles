@@ -1,8 +1,8 @@
 -- Automatically :write before running commands
-vim.opt.autowrite = true     
+vim.opt.autowrite = true
 
 -- Make it obvious where 80 characters is
-vim.opt.colorcolumn = "81"   
+vim.opt.colorcolumn = "81"
 
 -- Break line at 80 chars
 vim.opt.textwidth = 80
@@ -14,10 +14,12 @@ vim.opt.incsearch = true
 vim.opt.expandtab = true
 
 vim.opt.listchars = {
-	tab = '»·',
-	trail = '·',
-	nbsp = '·'
+  tab = '»·',
+  trail = '·',
+  nbsp = '·'
 }
+
+vim.opt.list = true
 
 -- No generates .swp files
 vim.opt.backup = false

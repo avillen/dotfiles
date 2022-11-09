@@ -3,3 +3,4 @@ alias todo='$EDITOR ~/todo'
 alias agrep='alias | grep'
 alias vim='nvim'
 alias python=python3
+alias pip=pip3

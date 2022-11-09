@@ -19,6 +19,7 @@ return require('packer').startup(function(use)
   use('voldikss/vim-floaterm')
   use('vim-test/vim-test')
   use('tpope/vim-dotenv')
+  use('github/copilot.vim')
 
   -- Telescope
   use({'nvim-treesitter/nvim-treesitter', run = ":TSUpdate"})

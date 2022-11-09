@@ -1,11 +1,4 @@
 ###############################################################################
-# Start with tmux
-
-if [ -z "$TMUX" ]; then
-  TERM=screen-256color-bce tmux new-session -A -s "dev"
-fi
-
-###############################################################################
 # Variables
 
 export GOROOT=/usr/local/go
@@ -16,8 +9,9 @@ export PATH="$HOME/.gem/bin:$PATH"
 export PATH="$PATH:/usr/local/go/bin"
 export PATH="$PATH:/$HOME/go/bin"
 export PATH="$PATH:$GOROOT/bin"
+export PATH="$PATH:/opt/homebrew/bin"
 
-export EDITOR=vim
+export EDITOR=nvim
 
 # fzf
 export FZF_DEFAULT_COMMAND='ag --nocolor --ignore _build -g ""'
@@ -33,9 +27,15 @@ export PATH=$PATH:$ANDROID_HOME/tools/bin
 export PATH=$PATH:$ANDROID_HOME/platform-tools
 
 ###############################################################################
-# asdf
+# Start with tmux
 
-. $HOME/.asdf/asdf.sh
+if [ -z "$TMUX" ]; then
+  TERM=screen-256color-bce tmux new-session -A -s "dev"
+fi
+
+
+###############################################################################
+# asdf
 
 fpath=(${ASDF_DIR}/completions $fpath)
 autoload -Uz compinit && compinit
@@ -55,10 +55,6 @@ plugins=(
 source $ZSH/oh-my-zsh.sh
 
 ###############################################################################
-# Autojump
-. /usr/share/autojump/autojump.sh
-
-###############################################################################
 # aliases
 
 [[ -f ~/.aliases ]] && source ~/.aliases
@@ -76,6 +72,7 @@ source $ZSH/oh-my-zsh.sh
 export SDKMAN_DIR="/home/av/.sdkman"
 [[ -s "/home/av/.sdkman/bin/sdkman-init.sh" ]] && source "/home/av/.sdkman/bin/sdkman-init.sh"
 
+eval "$(jump shell zsh)"
 
 autoload -U +X bashcompinit && bashcompinit
 complete -o nospace -C /usr/bin/terraform terraform

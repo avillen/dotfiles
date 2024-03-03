@@ -23,9 +23,6 @@ vim.api.nvim_set_keymap("n", "<Right>", ":vertical:resize +5<CR>", { noremap = t
 -- Use Telescope with CtrlP
 vim.api.nvim_set_keymap("n", "<C-p>", ":Telescope find_files<CR>", { noremap = true, silent = true })
 
--- Use Which-Key with CtrlI
-vim.api.nvim_set_keymap("n", "<C-w>", ":WhichKey<CR>", { noremap = true, silent = true })
-
 -- Copy current path location
 vim.api.nvim_set_keymap("n", "yp", ':let @*=expand("%")<CR>', {})
 

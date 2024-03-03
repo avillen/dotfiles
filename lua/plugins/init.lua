@@ -15,7 +15,6 @@ return require('packer').startup(function(use)
   }
   use('SirVer/ultisnips')
   use('honza/vim-snippets')
-  use('folke/which-key.nvim')
   use('voldikss/vim-floaterm')
   use('vim-test/vim-test')
   use('tpope/vim-dotenv')

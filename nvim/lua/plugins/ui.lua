@@ -1,12 +1,11 @@
 return {
   -- Colorscheme
   {
-    "catppuccin/nvim",
-    name = "catppuccin",
+    "rebelot/kanagawa.nvim",
     priority = 1000,
     config = function()
-      require("catppuccin").setup({ flavour = "mocha" })
-      vim.cmd.colorscheme("catppuccin")
+      require("kanagawa").setup({ theme = "wave" })
+      vim.cmd.colorscheme("kanagawa")
     end,
   },
 
@@ -16,9 +15,23 @@ return {
     dependencies = { "nvim-tree/nvim-web-devicons" },
     config = function()
       require("lualine").setup({
-        options = { theme = "catppuccin" },
+        options = { theme = "auto" },
       })
     end,
+  },
+
+  -- Syntax highlighting
+  {
+    "nvim-treesitter/nvim-treesitter",
+    build = ":TSUpdate",
+    main = "nvim-treesitter",
+    init = function()
+      require("nvim-treesitter.install").compilers = { "clang", "gcc", "cc" }
+    end,
+    opts = {
+      ensure_installed = { "python", "lua", "vim", "vimdoc" },
+      highlight = { enable = true },
+    },
   },
 
   -- File explorer
@@ -38,6 +51,7 @@ return {
             hide_dotfiles = false,
             hide_gitignored = false,
           },
+          follow_current_file = { enabled = true },
         },
       })
     end,

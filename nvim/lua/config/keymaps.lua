@@ -13,9 +13,16 @@ map("n", "<C-k>", "<C-w>k")
 map("n", "<C-l>", "<C-w>l")
 
 -- Neo-tree
-map("n", "<C-o>", "<cmd>Neotree toggle<cr>")
+map("n", "<C-o>", "<cmd>Neotree reveal<cr>")
+
+-- Previous buffer
+map("n", "<leader><leader>", "<C-^>")
 
 -- Telescope
 map("n", "<C-p>", "<cmd>Telescope find_files<cr>")
 map("n", "<C-f>", "<cmd>Telescope live_grep<cr>")
 map("n", "<leader>fb", "<cmd>Telescope buffers<cr>")
+
+-- Copy file path to clipboard
+map("n", "yp", '<cmd>let @+ = expand("%")<cr>')
+map("n", "yP", '<cmd>let @+ = expand("%:p")<cr>')

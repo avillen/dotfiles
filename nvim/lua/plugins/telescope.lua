@@ -11,6 +11,13 @@ return {
       telescope.setup({
         defaults = {
           file_ignore_patterns = { ".git/", "node_modules/", "__pycache__/" },
+          preview = { treesitter = false },
+          mappings = {
+            i = {
+              ["<C-k>"] = "move_selection_previous",
+              ["<C-j>"] = "move_selection_next",
+            },
+          },
         },
       })
       telescope.load_extension("fzf")

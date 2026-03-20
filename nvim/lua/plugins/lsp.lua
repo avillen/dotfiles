@@ -23,30 +23,38 @@ return {
       "hrsh7th/cmp-nvim-lsp",
     },
     config = function()
-      local lspconfig = require("lspconfig")
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-      local on_attach = function(_, bufnr)
-        local map = function(keys, func, desc)
-          vim.keymap.set("n", keys, func, { buffer = bufnr, desc = desc })
-        end
-        map("gd", vim.lsp.buf.definition, "Go to definition")
-        map("gr", vim.lsp.buf.references, "References")
-        map("K", vim.lsp.buf.hover, "Hover docs")
-        map("<leader>rn", vim.lsp.buf.rename, "Rename")
-        map("<leader>ca", vim.lsp.buf.code_action, "Code action")
-        map("<leader>d", vim.diagnostic.open_float, "Line diagnostics")
-      end
-
-      lspconfig.pyright.setup({
-        capabilities = capabilities,
-        on_attach = on_attach,
+      vim.api.nvim_create_autocmd("LspAttach", {
+        callback = function(args)
+          local bufnr = args.buf
+          local map = function(keys, func, desc)
+            vim.keymap.set("n", keys, func, { buffer = bufnr, desc = desc })
+          end
+          map("gd", vim.lsp.buf.definition, "Go to definition")
+          map("gr", vim.lsp.buf.references, "References")
+          map("K", vim.lsp.buf.hover, "Hover docs")
+          map("<leader>rn", vim.lsp.buf.rename, "Rename")
+          map("<leader>ca", vim.lsp.buf.code_action, "Code action")
+          map("<C-e>", vim.diagnostic.open_float, "Line diagnostics")
+        end,
       })
 
-      lspconfig.ruff.setup({
+      vim.lsp.config("pyright", {
         capabilities = capabilities,
-        on_attach = on_attach,
+        settings = {
+          python = {
+            analysis = {
+              autoSearchPaths = true,
+              useLibraryCodeForTypes = true,
+              diagnosticMode = "openFilesOnly",
+            },
+          },
+        },
       })
+      vim.lsp.config("ruff", { capabilities = capabilities })
+      vim.lsp.enable("pyright")
+      vim.lsp.enable("ruff")
     end,
   },
 }

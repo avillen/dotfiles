@@ -1,0 +1,2 @@
+alias agrep='alias | grep'
+alias vim='nvim'

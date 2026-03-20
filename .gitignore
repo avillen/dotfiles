@@ -1,0 +1,9 @@
+# Local git config (contains personal email/name)
+.gitconfig.local
+
+# macOS
+.DS_Store
+
+# IDEs
+.idea/
+.claude/

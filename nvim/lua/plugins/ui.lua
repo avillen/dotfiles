@@ -1,4 +1,18 @@
 return {
+  -- Git signs in gutter
+  {
+    "lewis6991/gitsigns.nvim",
+    config = function()
+      require("gitsigns").setup()
+    end,
+  },
+
+  -- Git diff viewer
+  {
+    "sindrets/diffview.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
+  },
+
   -- Colorscheme
   {
     "rebelot/kanagawa.nvim",

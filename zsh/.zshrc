@@ -21,7 +21,6 @@ source $ZSH/oh-my-zsh.sh
 # ── Personal aliases ────────────────────────────────────────────────────────
 [ -f "$HOME/.aliases" ] && source "$HOME/.aliases"
 
-
 # ── Google Cloud SDK ────────────────────────────────────────────────────────
 [ -f "$HOME/google-cloud-sdk/path.zsh.inc" ] && \
   source "$HOME/google-cloud-sdk/path.zsh.inc"

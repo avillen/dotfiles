@@ -13,7 +13,6 @@ return {
           require("neotest-python")({
             dap = { justMyCode = false },
             runner = "pytest",
-            env = { DJANGO_SETTINGS_MODULE = "last_mile.settings.local" },
             python = function()
               local venv = vim.fn.getcwd() .. "/.venv/bin/python"
               if vim.fn.filereadable(venv) == 1 then

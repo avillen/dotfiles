@@ -11,7 +11,7 @@ return {
     dependencies = { "williamboman/mason.nvim" },
     config = function()
       require("mason-lspconfig").setup({
-        ensure_installed = { "pyright", "ruff" },
+        ensure_installed = { "basedpyright", "ruff" },
       })
     end,
   },
@@ -33,6 +33,7 @@ return {
           end
           map("gd", vim.lsp.buf.definition, "Go to definition")
           map("gr", vim.lsp.buf.references, "References")
+          map("gi", vim.lsp.buf.implementation, "Go to implementation")
           map("K", vim.lsp.buf.hover, "Hover docs")
           map("<leader>rn", vim.lsp.buf.rename, "Rename")
           map("<leader>ca", vim.lsp.buf.code_action, "Code action")
@@ -40,7 +41,7 @@ return {
         end,
       })
 
-      vim.lsp.config("pyright", {
+      vim.lsp.config("basedpyright", {
         capabilities = capabilities,
         settings = {
           python = {
@@ -53,7 +54,7 @@ return {
         },
       })
       vim.lsp.config("ruff", { capabilities = capabilities })
-      vim.lsp.enable("pyright")
+      vim.lsp.enable("basedpyright")
       vim.lsp.enable("ruff")
     end,
   },

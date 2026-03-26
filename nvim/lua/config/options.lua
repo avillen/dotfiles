@@ -4,7 +4,7 @@ vim.env.PATH = vim.env.PATH .. ":/opt/homebrew/bin"
 
 -- Line numbers
 opt.number = true
-opt.relativenumber = true
+opt.relativenumber = false
 
 -- Tabs & indentation
 opt.tabstop = 4

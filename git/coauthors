@@ -1,0 +1,4 @@
+# One "Name <email>" entry per line.
+# gcpair will merge this file with authors detected from the current repository.
+
+Pairing Partner <pair@example.com>

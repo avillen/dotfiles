@@ -1,2 +1,59 @@
 alias agrep='alias | grep'
 alias vim='nvim'
+
+_git_coauthor_candidates() {
+  local file="$HOME/.config/git/coauthors"
+
+  {
+    if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+      git shortlog -sne --all 2>/dev/null | sed -E 's/^[[:space:]]*[0-9]+[[:space:]]+//'
+      git log --format='%aN <%aE>%n%cN <%cE>' --all 2>/dev/null
+    fi
+
+    if [ -f "$file" ]; then
+      sed '/^[[:space:]]*#/d;/^[[:space:]]*$/d' "$file"
+    fi
+  } | awk 'NF' | sort -fu
+}
+
+unalias gca 2>/dev/null
+
+gca() {
+  if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    echo "gca: not inside a git repository" >&2
+    return 1
+  fi
+
+  if ! command -v fzf >/dev/null 2>&1; then
+    cat >&2 <<'EOF'
+gca: fzf is required for interactive co-author selection.
+
+Install it and retry, or commit manually with:
+  git commit --trailer "Co-authored-by=Name <email>"
+EOF
+    return 1
+  fi
+
+  local selected
+  selected="$(_git_coauthor_candidates | fzf -m --prompt='Co-authors > ' --header='Select one or more co-authors (TAB to mark, ENTER to confirm)')"
+
+  if [ -z "$selected" ]; then
+    echo "gca: no co-authors selected" >&2
+    return 1
+  fi
+
+  local -a cmd
+  local author
+  cmd=(git commit "$@")
+
+  while IFS= read -r author; do
+    [ -z "$author" ] && continue
+    cmd+=(--trailer "Co-authored-by=$author")
+  done <<< "$selected"
+
+  "${cmd[@]}"
+}
+
+gcpair() {
+  gca "$@"
+}

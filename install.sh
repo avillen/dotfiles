@@ -20,6 +20,8 @@ link "$DOTFILES/zsh/.aliases" "$HOME/.aliases"
 
 echo "→ git"
 link "$DOTFILES/git/.gitconfig" "$HOME/.gitconfig"
+mkdir -p "$HOME/.config/git"
+link "$DOTFILES/git/coauthors" "$HOME/.config/git/coauthors"
 
 echo "→ tmux"
 link "$DOTFILES/tmux/.tmux.conf" "$HOME/.tmux.conf"

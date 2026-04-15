@@ -33,3 +33,15 @@ source "$HOME/code/tools/mo.tools.devtools/.bash_aliases"
 
 # ── Autojump ────────────────────────────────────────────────────────────────
 [ -f /opt/homebrew/etc/profile.d/autojump.sh ] && . /opt/homebrew/etc/profile.d/autojump.sh
+
+# ── Tmux window name = project (git root or current dir) ────────────────────
+_tmux_set_window_name() {
+  [ -z "$TMUX" ] && return
+  local name
+  name=$(git rev-parse --show-toplevel 2>/dev/null)
+  name=${name:+$(basename "$name")}
+  name=${name:-$(basename "$PWD")}
+  tmux rename-window "$name"
+}
+chpwd_functions+=(_tmux_set_window_name)
+_tmux_set_window_name

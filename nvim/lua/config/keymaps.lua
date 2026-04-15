@@ -1,4 +1,5 @@
-vim.g.mapleader = "º"
+local layout = vim.fn.system("defaults read com.apple.HIToolbox AppleSelectedInputSources 2>/dev/null | awk -F'= ' '/KeyboardLayout Name/{print $2; exit}'"):gsub("%s+", "")
+vim.g.mapleader = layout:find("Spanish") and "º" or "\\"
 
 local map = vim.keymap.set
 

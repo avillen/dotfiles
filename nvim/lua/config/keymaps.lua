@@ -35,7 +35,7 @@ map("n", "tn", "<cmd>tabnew<cr>", { desc = "New tab" })
 map("n", "tN", "<C-w>T", { desc = "Move window to new tab" })
 
 -- Neotest
-map("n", "tt", function() require("neotest").run.run() end, { desc = "Run nearest test" })
+map("n", "tt", function() require("config.python_tests").run_nearest() end, { desc = "Run nearest test" })
 map("n", "to", function() require("neotest").summary.toggle() end, { desc = "Toggle summary" })
 
 -- Diffview

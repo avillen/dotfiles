@@ -38,14 +38,17 @@ return {
   {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
-    main = "nvim-treesitter",
     init = function()
       require("nvim-treesitter.install").compilers = { "clang", "gcc", "cc" }
     end,
     opts = {
       ensure_installed = { "python", "lua", "vim", "vimdoc" },
+      auto_install = true,
       highlight = { enable = true },
     },
+    config = function(_, opts)
+      require("nvim-treesitter.configs").setup(opts)
+    end,
   },
 
   -- File explorer

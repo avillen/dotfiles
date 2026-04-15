@@ -44,11 +44,26 @@ return {
       vim.lsp.config("basedpyright", {
         capabilities = capabilities,
         settings = {
+          basedpyright = {
+            analysis = {
+              autoSearchPaths = true,
+              diagnosticMode = "openFilesOnly",
+              useLibraryCodeForTypes = true,
+              diagnosticSeverityOverrides = {
+                reportUnannotatedClassAttribute = "none",
+                reportImplicitStringConcatenation = "none",
+              },
+            },
+          },
           python = {
             analysis = {
               autoSearchPaths = true,
               useLibraryCodeForTypes = true,
               diagnosticMode = "openFilesOnly",
+              diagnosticSeverityOverrides = {
+                reportUnannotatedClassAttribute = "none",
+                reportImplicitStringConcatenation = "none",
+              },
             },
           },
         },

@@ -15,6 +15,7 @@ return {
           require("neotest-python")({
             dap = { justMyCode = false },
             runner = "pytest",
+            args = { "-vv" },
             pytest_discover_instances = true,
             is_test_file = python_tests.is_python_test_file,
           }),

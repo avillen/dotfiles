@@ -21,6 +21,11 @@ local function project_root(path)
     or vim.fn.getcwd()
 end
 
+local function pytest_root(path)
+  return vim.fs.root(path, { "pyproject.toml", "pytest.ini", "setup.cfg" })
+    or project_root(path)
+end
+
 local function makefile_contents(root)
   local makefile = root and (root .. "/Makefile") or nil
   if not makefile or vim.fn.filereadable(makefile) ~= 1 then
@@ -131,7 +136,7 @@ local function pytest_selector(bufnr)
   end
 
   local root = project_root(path)
-  local relative_path = vim.fs.relpath(root, path) or vim.fn.fnamemodify(path, ":.")
+  local relative_path = vim.fs.relpath(pytest_root(path), path) or vim.fn.fnamemodify(path, ":.")
   local row, col = unpack(vim.api.nvim_win_get_cursor(0))
   row = row - 1
 
@@ -177,7 +182,17 @@ local function open_terminal(command, cwd)
   local bufnr = vim.api.nvim_get_current_buf()
   vim.bo[bufnr].buflisted = false
 
-  vim.fn.termopen(command, { cwd = cwd })
+  vim.fn.termopen(command, {
+    cwd = cwd,
+    on_exit = function()
+      vim.schedule(function()
+        if vim.api.nvim_buf_is_valid(bufnr) then
+          vim.api.nvim_buf_set_keymap(bufnr, "n", "q", "<cmd>close<cr>", { noremap = true, silent = true })
+          vim.cmd("stopinsert")
+        end
+      end)
+    end,
+  })
   vim.cmd("startinsert")
 end
 
@@ -195,7 +210,7 @@ local function run_docker_test(path)
     return
   end
 
-  local command = vim.list_extend(vim.deepcopy(compose_command), { "exec", "-T", "app", "pytest", selector })
+  local command = vim.list_extend(vim.deepcopy(compose_command), { "exec", "app", "pytest", "--color=yes", "-vv", selector })
   open_terminal(command, root)
 end
 

@@ -2,6 +2,7 @@ local layout = vim.fn.system("defaults read com.apple.HIToolbox AppleSelectedInp
 vim.g.mapleader = layout:find("Spanish") and "º" or "\\"
 
 local map = vim.keymap.set
+local worktrees = require("config.worktrees")
 
 -- Save / quit
 map("n", "<leader>w", "<cmd>w<cr>")
@@ -42,6 +43,12 @@ map("n", "to", function() require("neotest").summary.toggle() end, { desc = "Tog
 map("n", "gd", "<cmd>DiffviewOpen<cr>")
 map("n", "gh", "<cmd>DiffviewFileHistory %<cr>")
 map("n", "gc", "<cmd>DiffviewClose<cr>")
+
+-- Worktrees
+map("n", "<leader>wn", worktrees.create_new_branch_worktree, { desc = "New worktree from new branch" })
+map("n", "<leader>we", worktrees.create_existing_branch_worktree, { desc = "New worktree from existing branch" })
+map("n", "<leader>ws", worktrees.switch_worktree, { desc = "Switch worktree" })
+map("n", "<leader>wd", worktrees.delete_worktree, { desc = "Delete worktree" })
 
 -- Copy file path to clipboard
 map("n", "yp", '<cmd>let @+ = expand("%")<cr>')

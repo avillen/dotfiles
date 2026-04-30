@@ -52,6 +52,8 @@ return {
               diagnosticSeverityOverrides = {
                 reportUnannotatedClassAttribute = "none",
                 reportImplicitStringConcatenation = "none",
+                reportUnusedCallResult = "none",
+                reportUnknownMemberType = "none",
               },
             },
           },
@@ -63,6 +65,8 @@ return {
               diagnosticSeverityOverrides = {
                 reportUnannotatedClassAttribute = "none",
                 reportImplicitStringConcatenation = "none",
+                reportUnusedCallResult = "none",
+                reportUnknownMemberType = "none",
               },
             },
           },

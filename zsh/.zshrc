@@ -9,6 +9,9 @@ export PATH="/opt/homebrew/bin:$PATH"
 # Path to your Oh My Zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
+# Path to your nvm installation.
+export NVM_DIR="$HOME/.nvm" && [ -s "$(brew --prefix nvm)/nvm.sh" ] && . "$(brew --prefix nvm)/nvm.sh"
+
 ZSH_THEME="lambder"
 
 plugins=(

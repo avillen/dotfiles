@@ -1,3 +1,4 @@
+alias wm='workmux'
 alias agrep='alias | grep'
 alias vim='nvim'
 

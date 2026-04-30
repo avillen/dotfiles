@@ -26,6 +26,10 @@ link "$DOTFILES/git/coauthors" "$HOME/.config/git/coauthors"
 echo "→ tmux"
 link "$DOTFILES/tmux/.tmux.conf" "$HOME/.tmux.conf"
 
+echo "→ workmux"
+mkdir -p "$HOME/.config/workmux"
+link "$DOTFILES/workmux/config.yaml" "$HOME/.config/workmux/config.yaml"
+
 echo "→ nvim"
 mkdir -p "$HOME/.config"
 link "$DOTFILES/nvim" "$HOME/.config/nvim"

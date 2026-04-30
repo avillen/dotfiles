@@ -1,0 +1,12 @@
+nerdfont: true
+agent: codex
+
+panes:
+  - command: nvim .
+    focus: true
+  - command: codex
+    split: vertical
+    percentage: 30
+  - command: zsh
+    split: horizontal
+    percentage: 50

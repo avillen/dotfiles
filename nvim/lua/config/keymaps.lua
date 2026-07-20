@@ -44,6 +44,11 @@ map("n", "gd", "<cmd>DiffviewOpen<cr>")
 map("n", "gh", "<cmd>DiffviewFileHistory %<cr>")
 map("n", "gc", "<cmd>DiffviewClose<cr>")
 
+-- Git blame / open on GitHub (fugitive + rhubarb)
+map("n", "<leader>gb", "<cmd>Git blame<cr>", { desc = "Git blame" })
+map("n", "<leader>gg", "<cmd>GBrowse<cr>", { desc = "Open file on GitHub" })
+map("x", "<leader>gg", ":GBrowse<cr>", { desc = "Open selection on GitHub" })
+
 -- Worktrees
 map("n", "<leader>wn", worktrees.create_new_branch_worktree, { desc = "New worktree from new branch" })
 map("n", "<leader>we", worktrees.create_existing_branch_worktree, { desc = "New worktree from existing branch" })

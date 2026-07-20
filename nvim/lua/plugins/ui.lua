@@ -13,6 +13,17 @@ return {
     dependencies = { "nvim-lua/plenary.nvim" },
   },
 
+  -- Git wrapper + GitHub integration (:GBrowse)
+  {
+    "tpope/vim-fugitive",
+    dependencies = { "tpope/vim-rhubarb" },
+    config = function()
+      vim.api.nvim_create_user_command("Browse", function(opts)
+        vim.ui.open(opts.fargs[1])
+      end, { nargs = 1 })
+    end,
+  },
+
   -- Colorscheme
   {
     "rebelot/kanagawa.nvim",

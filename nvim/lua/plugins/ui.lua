@@ -50,13 +50,26 @@ return {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
     opts = {
-      ensure_installed = { "python", "lua", "vim", "vimdoc" },
+      ensure_installed = {
+        "python",
+        "lua",
+        "vim",
+        "vimdoc",
+        "elixir",
+        "eex",
+        "heex",
+        "javascript",
+        "typescript",
+        "tsx",
+        "json",
+      },
       auto_install = true,
       highlight = { enable = true },
+      indent = { enable = true },
     },
     config = function(_, opts)
       require("nvim-treesitter.install").compilers = { "clang", "gcc", "cc" }
-      require("nvim-treesitter").setup(opts)
+      require("nvim-treesitter.configs").setup(opts)
     end,
   },
 

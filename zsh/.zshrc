@@ -3,8 +3,16 @@ if command -v tmux &>/dev/null && [ -z "$TMUX" ]; then
   tmux attach -t default 2>/dev/null || tmux new-session -s default
 fi
 
+
+# ── bin ─────────────────────────────────────────────────────────────────────
+export PATH="$HOME/.local/bin:$PATH"
+
 # ── Homebrew ────────────────────────────────────────────────────────────────
 export PATH="/opt/homebrew/bin:$PATH"
+
+# ── asdf ────────────────────────────────────────────────────────────────────
+export ASDF_DATA_DIR="$HOME/.asdf"
+export PATH="$ASDF_DATA_DIR/shims:$PATH"
 
 # Path to your Oh My Zsh installation.
 export ZSH="$HOME/.oh-my-zsh"

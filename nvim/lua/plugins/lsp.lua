@@ -11,7 +11,7 @@ return {
     dependencies = { "williamboman/mason.nvim" },
     config = function()
       require("mason-lspconfig").setup({
-        ensure_installed = { "basedpyright", "ruff" },
+        ensure_installed = { "basedpyright", "ruff", "expert", "ts_ls", "eslint" },
       })
     end,
   },
@@ -72,9 +72,36 @@ return {
           },
         },
       })
+      vim.lsp.config("expert", {
+        capabilities = capabilities,
+        cmd = { "expert", "--stdio" },
+        filetypes = { "elixir", "eelixir", "heex", "surface" },
+        root_markers = { "mix.exs", ".git" },
+      })
       vim.lsp.config("ruff", { capabilities = capabilities })
+      vim.lsp.config("ts_ls", {
+        capabilities = capabilities,
+        filetypes = {
+          "javascript",
+          "javascriptreact",
+          "typescript",
+          "typescriptreact",
+        },
+      })
+      vim.lsp.config("eslint", {
+        capabilities = capabilities,
+        filetypes = {
+          "javascript",
+          "javascriptreact",
+          "typescript",
+          "typescriptreact",
+        },
+      })
       vim.lsp.enable("basedpyright")
+      vim.lsp.enable("expert")
       vim.lsp.enable("ruff")
+      vim.lsp.enable("ts_ls")
+      vim.lsp.enable("eslint")
     end,
   },
 }

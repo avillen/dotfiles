@@ -5,6 +5,7 @@ return {
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
       "nvim-neotest/nvim-nio",
+      "jfpedroza/neotest-elixir",
       "nvim-neotest/neotest-python",
     },
     config = function()
@@ -12,6 +13,7 @@ return {
 
       require("neotest").setup({
         adapters = {
+          require("neotest-elixir"),
           require("neotest-python")({
             dap = { justMyCode = false },
             runner = "pytest",

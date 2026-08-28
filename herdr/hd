@@ -1,0 +1,162 @@
+#!/bin/sh
+# hd — el flujo de trabajo que daba `wm`, sobre herdr + worktrunk.
+#
+#   hd add <rama>    crea el worktree (disparando los hooks de worktrunk, que
+#                    montan su entorno Docker), abre una TAB en el space en el
+#                    que estas y monta el layout (claude + terminal abajo)
+#   hd remove        borra el worktree en el que estas: baja su entorno Docker
+#                    (hook pre-remove) y cierra las tabs que vivian dentro
+#   hd remove <rama> lo mismo, para una rama concreta
+#   hd <cualquier>   se lo pasa tal cual a herdr
+#
+# Equivale al `wm add` de workmux. La diferencia es que herdr no tiene layouts
+# declarativos: el equivalente al bloque `panes:` de workmux/config.yaml es la
+# funcion layout() de aqui abajo, via la API de sockets. Se toca ahi.
+set -eu
+
+die() { echo "hd: $*" >&2; exit 1; }
+
+# Extrae una ruta de claves del JSON que devuelven los comandos de herdr.
+get() { python3 -c 'import json,sys; print(json.load(sys.stdin)'"$1"')'; }
+
+# Layout: claude ocupando casi todo y una terminal abajo.
+#
+#   +----------------------+
+#   |                      |
+#   |        claude        |   ~75%
+#   |                      |
+#   +----------------------+
+#   |         zsh          |   ~25%
+#   +----------------------+
+#
+# Sin panel fijo de nvim: lo cubre el sidebar de herdr-nvim (prefix+e), que
+# ademas es por tab y persiste al cerrarlo.
+#
+# El foco se queda en claude.
+layout() {
+  root=$1; cwd=$2; name=$3
+
+  # --ratio es la fraccion que se queda el panel que PARTES, no el nuevo.
+  # herdr no lo documenta; comprobado a mano: con 0.25 la terminal salia al 75%.
+  herdr pane split "$root" --direction down --ratio 0.75 \
+    --cwd "$cwd" --no-focus > /dev/null
+
+  # agent start exige que el panel este en su prompt, asi que va despues del
+  # split. Los nombres deben casar [a-z][a-z0-9_-]{0,31} y ser unicos.
+  herdr agent start "$name" --kind claude --pane "$root" > /dev/null 2>&1 \
+    || echo "hd: claude no arranco en $root, arrancalo a mano"
+}
+
+# Ruta del worktree de una rama. El schema del JSON va fijado a proposito:
+# worktrunk avisa de que una version futura cambia el default, y eso romperia
+# este parseo en silencio.
+worktree_path() {
+  wt list --format=json --config-set list.json-schema=1 2>/dev/null \
+    | python3 -c 'import json,sys
+branch = sys.argv[1]
+for w in json.load(sys.stdin):
+    if w.get("branch") == branch:
+        print(w["path"]); break' "$1"
+}
+
+add() {
+  branch=${1:-} ; [ -n "$branch" ] || die "uso: hd add <rama>"
+
+  [ "${HERDR_ENV:-}" = 1 ] || die "esto solo funciona dentro de un panel de herdr"
+  [ -n "${HERDR_WORKSPACE_ID:-}" ] || die "no encuentro el space actual"
+  git rev-parse --is-inside-work-tree > /dev/null 2>&1 || die "no estas en un repo git"
+
+  # --no-cd porque la navegacion la hace herdr, no la shell. Los hooks (o sea,
+  # el arranque del entorno Docker) corren igual.
+  if git show-ref --verify --quiet "refs/heads/$branch"; then
+    wt switch "$branch" --no-cd
+  else
+    wt switch --create "$branch" --no-cd
+  fi
+
+  path=$(worktree_path "$branch")
+  [ -n "$path" ] || die "no encuentro el worktree de '$branch'"
+
+  root=$(herdr tab create --workspace "$HERDR_WORKSPACE_ID" \
+           --cwd "$path" --label "$branch" --focus \
+         | get '["result"]["root_pane"]["pane_id"]')
+
+  name=$(printf '%s' "$branch" | tr 'A-Z' 'a-z' | tr -c 'a-z0-9_-' '-' | cut -c1-32)
+  layout "$root" "$path" "$name"
+
+  echo "hd: tab '$branch' lista en $path"
+}
+
+# Devuelve los tab_id cuyos paneles viven dentro de la ruta dada. Se localiza
+# por cwd y no por nombre de tab: el nombre lo puede haber cambiado el usuario.
+tabs_under() {
+  herdr pane list 2>/dev/null | python3 -c 'import json,sys,os
+root = os.path.realpath(sys.argv[1])
+tabs = []
+for p in json.load(sys.stdin)["result"]["panes"]:
+    cwd = p.get("cwd") or ""
+    try:
+        cwd = os.path.realpath(cwd)
+    except OSError:
+        continue
+    if cwd == root or cwd.startswith(root + os.sep):
+        if p["tab_id"] not in tabs:
+            tabs.append(p["tab_id"])
+print("\n".join(tabs))' "$1"
+}
+
+remove() {
+  branch=${1:-}
+  git rev-parse --is-inside-work-tree > /dev/null 2>&1 || die "no estas en un repo git"
+
+  main=$(dirname "$(git rev-parse --path-format=absolute --git-common-dir)")
+  top=$(git rev-parse --show-toplevel)
+
+  # Sin argumento: el worktree en el que estas, que es el caso normal (acabas
+  # el trabajo y lo tiras desde dentro).
+  if [ -z "$branch" ]; then
+    [ "$top" != "$main" ] || die "estas en el checkout principal: di que rama borrar"
+    branch=$(git rev-parse --abbrev-ref HEAD)
+    [ "$branch" != "HEAD" ] || die "worktree en HEAD suelto: di que rama borrar"
+  fi
+
+  path=$(worktree_path "$branch")
+  [ -n "$path" ] || die "no encuentro el worktree de '$branch'"
+  [ "$path" != "$main" ] || die "no voy a borrar el checkout principal"
+
+  # Se anotan ANTES del borrado: despues el cwd de los paneles ya no existe y
+  # no habria forma de relacionarlos con el worktree.
+  tabs=$(tabs_under "$path")
+
+  # Nos salimos del worktree antes de tirarlo, para no ejecutar wt desde un
+  # directorio que esta a punto de desaparecer.
+  cd "$main" || die "no puedo entrar en $main"
+
+  # Sin --yes a proposito: borra rama y worktree, que lo confirme el usuario.
+  # Aqui es donde worktrunk lanza el hook pre-remove (el teardown de Docker),
+  # con el checkout todavia en su sitio.
+  wt remove "$branch" || die "worktrunk no ha borrado '$branch'; no toco las tabs"
+
+  # La tab propia se cierra la ultima: al cerrarla muere este script.
+  self=${HERDR_TAB_ID:-}
+  mine=no
+  for t in $tabs; do
+    if [ "$t" = "$self" ]; then
+      mine=si
+      continue
+    fi
+    herdr tab close "$t" > /dev/null 2>&1 && echo "hd: cerrada tab $t"
+  done
+
+  echo "hd: '$branch' eliminado"
+  if [ "$mine" = si ]; then
+    herdr tab close "$self" > /dev/null 2>&1 || true
+  fi
+}
+
+case "${1:-}" in
+  add) shift; add "$@" ;;
+  remove|rm) shift; remove "$@" ;;
+  "")  exec herdr ;;
+  *)   exec herdr "$@" ;;
+esac

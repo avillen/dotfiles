@@ -1,0 +1,109 @@
+# herdr — configuracion
+#
+# Todo lo que no aparezca aqui se queda en el default de herdr.
+#
+#   herdr --default-config     ver todos los ajustes disponibles y su default
+#   herdr config check         validar este fichero
+#   herdr server reload-config aplicar sin reiniciar (o prefix+shift+r)
+
+[keys]
+# Splits como en tmux por defecto: % al lado, " debajo.
+# Van en cadena TOML literal (comillas simples) para poder escribir el " dentro.
+split_vertical = 'prefix+%'
+split_horizontal = 'prefix+"'
+
+# ── Redimensionar paneles ───────────────────────────────────────────────────
+# Sustituto del `bind -r H/J/K/L` de tmux. herdr no tiene bindings repetibles,
+# asi que la repeticion se consigue con un MODO: prefix+r entra en resize y a
+# partir de ahi las teclas de direccion van sueltas, sin modificador y sin
+# limite, hasta que sales (esc).
+#
+# No se puede bindear el resize a h/j/k/l pelados fuera del modo: herdr las
+# capturaria antes que el panel y no se podria escribir esa letra en nvim.
+resize_mode = "prefix+r"
+
+# ── Crear ──────────────────────────────────────────────────────────────────
+# Tab nueva en prefix+t. prefix+shift+t sigue siendo renombrar tab.
+new_tab = "prefix+t"
+
+# Space nuevo en prefix+c, que queda libre al mover new_tab a prefix+t.
+# Sustituye al default prefix+shift+n, que se queda sin asignar.
+new_workspace = "prefix+c"
+
+# ── herdr-nvim (plugin chmarax.herdr-nvim) ──────────────────────────────────
+# Sus dos acciones van en prefix+e y prefix+o, que es lo que documenta el
+# plugin, pero ambas son defaults de herdr. Los builtins desplazados se
+# reasignan aqui para no perderlos en silencio: el validador NO avisa de
+# colisiones, asi que quedarian pisados sin decir nada.
+edit_scrollback = "prefix+shift+e"
+open_notification_target = "prefix+shift+o"
+
+# ── Worktrees: los gestiona worktrunk ───────────────────────────────────────
+# Se desactiva la creacion propia de herdr a proposito. Crea el worktree por su
+# cuenta y NO dispara los hooks de worktrunk, asi que un worktree creado por
+# esta via se quedaria sin su entorno Docker aislado y `make test` acabaria
+# testeando el codigo del checkout principal. Un unico camino: prefix+alt+w.
+new_worktree = ""
+
+# ── Moverse entre spaces con j/k ────────────────────────────────────────────
+# Directo. Van con shift porque prefix+j y prefix+k son focus_pane_down/up
+# (moverse entre PANELES), que se mantienen. Estas teclas quedaron libres al
+# pasar el resize a resize_mode.
+next_workspace = "prefix+shift+j"
+previous_workspace = "prefix+shift+k"
+
+# Y lo mismo dentro del modo navegacion (prefix+g), donde j/k recorren la lista
+# de la barra lateral. Como ahi j/k pasan a ser de space, se liberan de paneles
+# para que no choquen: en ese modo los paneles siguen con h/l y con las
+# flechas, que herdr tiene cableadas siempre a paneles.
+navigate_workspace_down = "j"
+navigate_workspace_up = "k"
+navigate_pane_down = ""
+navigate_pane_up = ""
+
+[ui]
+# Paneles pegados, sin separacion: comparten el borde divisorio.
+pane_gaps = false
+
+# Fecha y hora arriba a la derecha, con el mismo formato que el
+# `status-right " %Y-%m-%d %H:%M "` de tmux. Se apoya en que la barra de tabs
+# esta arriba, que es el default (ui.tab_bar_position = "top").
+tab_bar_right = [{ type = "datetime", format = "%Y-%m-%d %H:%M" }]
+
+# ── Acciones del plugin herdr-nvim ──────────────────────────────────────────
+agent_panel_sort = "spaces"
+status_indicators = "dots"
+show_agent_labels_on_pane_borders = false
+[[keys.command]]
+key = "prefix+e"
+type = "plugin_action"
+command = "chmarax.herdr-nvim.toggle"
+description = "nvim sidebar"
+
+[[keys.command]]
+key = "prefix+o"
+type = "plugin_action"
+command = "chmarax.herdr-nvim.pick-file"
+description = "abrir fichero tocado por el agente"
+
+# ── Acciones del plugin worktrunk (sustituyen a `wm add` / `rm` / `merge`) ───
+[[keys.command]]
+key = "prefix+alt+w"
+type = "plugin_action"
+command = "worktrunk.open"
+description = "worktree: cambiar / crear"
+
+[[keys.command]]
+key = "prefix+alt+r"
+type = "plugin_action"
+command = "worktrunk.remove"
+description = "worktree: borrar"
+
+[[keys.command]]
+key = "prefix+alt+m"
+type = "plugin_action"
+command = "worktrunk.merge"
+description = "worktree: merge y limpieza"
+
+[ui.toast]
+delivery = "herdr"

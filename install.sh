@@ -30,6 +30,13 @@ echo "→ workmux"
 mkdir -p "$HOME/.config/workmux"
 link "$DOTFILES/workmux/config.yaml" "$HOME/.config/workmux/config.yaml"
 
+echo "→ herdr"
+mkdir -p "$HOME/.config/herdr"
+link "$DOTFILES/herdr/config.toml" "$HOME/.config/herdr/config.toml"
+
+mkdir -p "$HOME/.local/bin"
+link "$DOTFILES/herdr/hd" "$HOME/.local/bin/hd"
+
 echo "→ nvim"
 mkdir -p "$HOME/.config"
 link "$DOTFILES/nvim" "$HOME/.config/nvim"

@@ -1,5 +1,3 @@
-alias wm='workmux'
-alias wmd='workmux dashboard'
 alias agrep='alias | grep'
 alias vim='nvim'
 
@@ -62,5 +60,5 @@ gcpair() {
 
 # ── herdr ───────────────────────────────────────────────────────────────────
 # `hd` es un script en ~/.local/bin (ver install.sh), no un alias: asi funciona
-# tambien desde scripts y desde los hooks. `hd add <rama>` sustituye a `wm add`;
-# cualquier otro argumento se lo pasa a herdr tal cual.
+# tambien desde scripts y desde los hooks. `hd add <rama>` crea el worktree con
+# su layout; cualquier otro argumento se lo pasa a herdr tal cual.

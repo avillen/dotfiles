@@ -26,10 +26,6 @@ link "$DOTFILES/git/coauthors" "$HOME/.config/git/coauthors"
 echo "→ tmux"
 link "$DOTFILES/tmux/.tmux.conf" "$HOME/.tmux.conf"
 
-echo "→ workmux"
-mkdir -p "$HOME/.config/workmux"
-link "$DOTFILES/workmux/config.yaml" "$HOME/.config/workmux/config.yaml"
-
 echo "→ herdr"
 mkdir -p "$HOME/.config/herdr"
 link "$DOTFILES/herdr/config.toml" "$HOME/.config/herdr/config.toml"

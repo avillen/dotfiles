@@ -22,6 +22,16 @@ split_horizontal = 'prefix+"'
 # capturaria antes que el panel y no se podria escribir esa letra en nvim.
 resize_mode = "prefix+r"
 
+# ── Modo copia (el prefix+[ de tmux) ────────────────────────────────────────
+# Va en prefix+v, que quedo libre al mover los splits a % y ". Dentro se mueve
+# en plan vi: h/j/k/l, w/b/e y W/B/E, {/}, ctrl+u/ctrl+d, ctrl+b/ctrl+f.
+# `v` o espacio empieza la seleccion, `y` o enter copia, `q` o esc sale.
+# `/` y `?` buscan, `n` y `N` repiten.
+#
+# Ojo: copy_mode NO aparece en `herdr --default-config`, es una omision suya.
+# El default es prefix+[.
+copy_mode = "prefix+v"
+
 # ── Crear ──────────────────────────────────────────────────────────────────
 # Tab nueva en prefix+t. prefix+shift+t sigue siendo renombrar tab.
 new_tab = "prefix+t"
@@ -70,10 +80,12 @@ pane_gaps = false
 # esta arriba, que es el default (ui.tab_bar_position = "top").
 tab_bar_right = [{ type = "datetime", format = "%Y-%m-%d %H:%M" }]
 
-# ── Acciones del plugin herdr-nvim ──────────────────────────────────────────
+# Escritas por la UI de ajustes de herdr (prefix+s), no a mano.
 agent_panel_sort = "spaces"
 status_indicators = "dots"
 show_agent_labels_on_pane_borders = false
+
+# ── Acciones del plugin herdr-nvim ──────────────────────────────────────────
 [[keys.command]]
 key = "prefix+e"
 type = "plugin_action"
@@ -105,5 +117,15 @@ type = "plugin_action"
 command = "worktrunk.merge"
 description = "worktree: merge y limpieza"
 
+# Aviso cuando un agente termina o se bloquea pidiendo permiso en un space que
+# no estas mirando. "system" usa la notificacion del SO; "herdr" la pinta dentro
+# de la app y solo se ve si estas delante. Antes de instalar la integracion
+# oficial de claude esto no habria sido fiable: herdr adivinaba el estado
+# leyendo el terminal. Ahora el estado es real (working / idle / blocked / done).
 [ui.toast]
-delivery = "herdr"
+delivery = "system"
+delay_seconds = 1
+
+[theme]
+name = "catppuccin"
+auto_switch = false

@@ -1,16 +1,16 @@
 #!/bin/sh
-# hd — el flujo de trabajo que daba `wm`, sobre herdr + worktrunk.
+# hd — flujo de trabajo de worktrees sobre herdr + worktrunk.
 #
 #   hd add <rama>    crea el worktree (disparando los hooks de worktrunk, que
-#                    montan su entorno Docker), abre una TAB en el space en el
-#                    que estas y monta el layout (claude + terminal abajo)
+#                    montan su entorno Docker) y rehace la TAB ACTUAL con el
+#                    layout: claude arriba y una terminal abajo, en el worktree.
+#                    Los paneles que hubiera en la tab se cierran.
 #   hd remove        borra el worktree en el que estas: baja su entorno Docker
 #                    (hook pre-remove) y cierra las tabs que vivian dentro
 #   hd remove <rama> lo mismo, para una rama concreta
 #   hd <cualquier>   se lo pasa tal cual a herdr
 #
-# Equivale al `wm add` de workmux. La diferencia es que herdr no tiene layouts
-# declarativos: el equivalente al bloque `panes:` de workmux/config.yaml es la
+# herdr no tiene layouts declarativos: el layout se construye a mano en la
 # funcion layout() de aqui abajo, via la API de sockets. Se toca ahi.
 set -eu
 
@@ -19,32 +19,86 @@ die() { echo "hd: $*" >&2; exit 1; }
 # Extrae una ruta de claves del JSON que devuelven los comandos de herdr.
 get() { python3 -c 'import json,sys; print(json.load(sys.stdin)'"$1"')'; }
 
-# Layout: claude ocupando casi todo y una terminal abajo.
+# Los pane_id de una tab.
+panes_in_tab() {
+  herdr pane list --workspace "$HERDR_WORKSPACE_ID" 2>/dev/null | python3 -c 'import json,sys
+tab = sys.argv[1]
+for p in json.load(sys.stdin)["result"]["panes"]:
+    if p.get("tab_id") == tab:
+        print(p["pane_id"])' "$1"
+}
+
+# Layout en la tab ACTUAL: claude arriba y una terminal abajo.
 #
 #   +----------------------+
 #   |                      |
-#   |        claude        |   ~75%
+#   |        claude        |   75%
 #   |                      |
 #   +----------------------+
-#   |         zsh          |   ~25%
+#   |         zsh          |   25%
 #   +----------------------+
 #
-# Sin panel fijo de nvim: lo cubre el sidebar de herdr-nvim (prefix+e), que
-# ademas es por tab y persiste al cerrarlo.
+# No se puede cambiar el cwd de un panel que ya existe, asi que los dos paneles
+# se crean nuevos con el cwd del worktree y los viejos de la tab se cierran
+# despues. El propio panel desde el que se lanza hd tambien se cierra, y va el
+# ultimo: al cerrarlo muere este script.
 #
-# El foco se queda en claude.
+# Sin panel fijo de nvim: lo cubre el sidebar de herdr-nvim (prefix+e).
 layout() {
-  root=$1; cwd=$2; name=$3
+  cwd=$1; name=$2
+
+  # La lista de paneles viejos se toma ANTES de crear los nuevos, para no
+  # tener que distinguirlos despues.
+  olds=$(panes_in_tab "$HERDR_TAB_ID")
+
+  # --focus en el de claude para que el foco ya este ahi cuando cerremos los
+  # viejos; si no, al cerrar el panel actual el foco acabaria en cualquier sitio.
+  agent_pane=$(herdr pane split "$HERDR_PANE_ID" --direction down \
+                 --cwd "$cwd" --focus | get '["result"]["pane"]["pane_id"]')
 
   # --ratio es la fraccion que se queda el panel que PARTES, no el nuevo.
-  # herdr no lo documenta; comprobado a mano: con 0.25 la terminal salia al 75%.
-  herdr pane split "$root" --direction down --ratio 0.75 \
+  # herdr no lo documenta; comprobado a mano.
+  herdr pane split "$agent_pane" --direction down --ratio 0.75 \
     --cwd "$cwd" --no-focus > /dev/null
 
-  # agent start exige que el panel este en su prompt, asi que va despues del
-  # split. Los nombres deben casar [a-z][a-z0-9_-]{0,31} y ser unicos.
-  herdr agent start "$name" --kind claude --pane "$root" > /dev/null 2>&1 \
-    || echo "hd: claude no arranco en $root, arrancalo a mano"
+  start_agent "$agent_pane" "$name"
+
+  # Los viejos, el propio al final.
+  for old in $olds; do
+    [ "$old" = "$HERDR_PANE_ID" ] && continue
+    herdr pane close "$old" > /dev/null 2>&1 || true
+  done
+}
+
+# Arranca claude esperando a que el shell del panel llegue a su prompt.
+#
+# `agent start` exige el panel EN su prompt y por dentro solo reintenta unos
+# 110 ms diez veces (~1 s) antes de rendirse con `agent_pane_busy`. Un segundo
+# no basta: el .zshrc carga oh-my-zsh, asdf, gcloud y un `brew --prefix nvm`
+# que es un subproceso, y encima el hook post-start de worktrunk esta
+# levantando el entorno Docker en paralelo. Asi que reintentamos aqui.
+#
+# Los nombres de agente deben casar [a-z][a-z0-9_-]{0,31} y ser unicos.
+start_agent() {
+  pane=$1; name=$2; waited=0
+  while :; do
+    # Se captura solo stderr: ahi es donde herdr deja el JSON del error.
+    if err=$(herdr agent start "$name" --kind claude --pane "$pane" 2>&1 > /dev/null); then
+      return 0
+    fi
+    case "$err" in
+      *agent_pane_busy*)
+        [ "$waited" -ge 45 ] && break
+        [ "$waited" -eq 0 ] && echo "hd: esperando a que arranque el shell del panel..."
+        sleep 1
+        waited=$((waited + 1))
+        ;;
+      # Cualquier otro error no se arregla esperando.
+      *) break ;;
+    esac
+  done
+  echo "hd: claude no arranco en $pane tras ${waited}s: $err" >&2
+  echo "hd: arrancalo a mano con 'claude' en ese panel" >&2
 }
 
 # Ruta del worktree de una rama. El schema del JSON va fijado a proposito:
@@ -64,6 +118,8 @@ add() {
 
   [ "${HERDR_ENV:-}" = 1 ] || die "esto solo funciona dentro de un panel de herdr"
   [ -n "${HERDR_WORKSPACE_ID:-}" ] || die "no encuentro el space actual"
+  [ -n "${HERDR_TAB_ID:-}" ] || die "no encuentro la tab actual"
+  [ -n "${HERDR_PANE_ID:-}" ] || die "no encuentro el panel actual"
   git rev-parse --is-inside-work-tree > /dev/null 2>&1 || die "no estas en un repo git"
 
   # --no-cd porque la navegacion la hace herdr, no la shell. Los hooks (o sea,
@@ -77,14 +133,18 @@ add() {
   path=$(worktree_path "$branch")
   [ -n "$path" ] || die "no encuentro el worktree de '$branch'"
 
-  root=$(herdr tab create --workspace "$HERDR_WORKSPACE_ID" \
-           --cwd "$path" --label "$branch" --focus \
-         | get '["result"]["root_pane"]["pane_id"]')
+  # La tab pasa a llamarse como la rama. Antes lo hacia el --label de
+  # `tab create`, que ya no se usa: se reutiliza la tab actual.
+  herdr tab rename "$HERDR_TAB_ID" "$branch" > /dev/null 2>&1 || true
 
   name=$(printf '%s' "$branch" | tr 'A-Z' 'a-z' | tr -c 'a-z0-9_-' '-' | cut -c1-32)
-  layout "$root" "$path" "$name"
 
-  echo "hd: tab '$branch' lista en $path"
+  # Se imprime antes del layout: el panel donde se ve esto se cierra al final.
+  echo "hd: '$branch' listo en $path"
+  layout "$path" "$name"
+
+  # El panel desde el que lanzaste hd, el ultimo. Aqui muere el script.
+  herdr pane close "$HERDR_PANE_ID" > /dev/null 2>&1 || true
 }
 
 # Devuelve los tab_id cuyos paneles viven dentro de la ruta dada. Se localiza

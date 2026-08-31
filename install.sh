@@ -33,6 +33,16 @@ link "$DOTFILES/herdr/config.toml" "$HOME/.config/herdr/config.toml"
 mkdir -p "$HOME/.local/bin"
 link "$DOTFILES/herdr/hd" "$HOME/.local/bin/hd"
 
+echo "→ config local"
+# No es un symlink: lleva valores propios de la maquina y el repo es publico.
+mkdir -p "$HOME/.config/dotfiles"
+if [ -f "$HOME/.config/dotfiles/local.env" ]; then
+  echo "  [skip]   $HOME/.config/dotfiles/local.env ya existe"
+else
+  cp "$DOTFILES/worktrunk/local.env.example" "$HOME/.config/dotfiles/local.env"
+  echo "  [nuevo]  $HOME/.config/dotfiles/local.env — rellenalo"
+fi
+
 echo "→ nvim"
 mkdir -p "$HOME/.config"
 link "$DOTFILES/nvim" "$HOME/.config/nvim"

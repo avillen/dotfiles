@@ -48,9 +48,28 @@ return {
   -- Syntax highlighting
   {
     "nvim-treesitter/nvim-treesitter",
+    -- Rama `main`: es una reescritura incompatible, no un bump. Ya no existen
+    -- nvim-treesitter.configs ni nvim-treesitter.install, y desaparecen
+    -- ensure_installed, auto_install, highlight e indent. El plugin ahora solo
+    -- instala parsers y queries; el resaltado lo da Neovim y hay que
+    -- encenderlo a mano (el autocmd de abajo).
+    --
+    -- `master` sigue existiendo pero esta archivada upstream, sin arreglos ni
+    -- parsers nuevos, asi que no es sitio donde quedarse.
+    --
+    -- Requiere nvim >= 0.12, tree-sitter-cli >= 0.26.1 (por brew, NO por npm),
+    -- curl, tar y un compilador de C.
+    branch = "main",
+    -- Upstream dice explicitamente que no soporta lazy-loading.
+    lazy = false,
     build = ":TSUpdate",
-    opts = {
-      ensure_installed = {
+    config = function()
+      local ts = require("nvim-treesitter")
+      ts.setup()
+
+      -- Sustituye a ensure_installed. Es no-op si ya estan instalados, y
+      -- asincrono: no bloquea el arranque.
+      ts.install({
         "python",
         "lua",
         "vim",
@@ -62,14 +81,22 @@ return {
         "typescript",
         "tsx",
         "json",
-      },
-      auto_install = true,
-      highlight = { enable = true },
-      indent = { enable = true },
-    },
-    config = function(_, opts)
-      require("nvim-treesitter.install").compilers = { "clang", "gcc", "cc" }
-      require("nvim-treesitter.configs").setup(opts)
+      })
+
+      -- Sustituye a highlight = { enable = true } e indent = { enable = true }.
+      -- Sin pattern: vim.treesitter.start() resuelve el filetype -> lenguaje el
+      -- solo, lo que evita tener que mapear a mano los casos en que no
+      -- coinciden (tsx -> typescriptreact, vimdoc -> help, eex -> eelixir).
+      -- El pcall es el guarda: start() falla si no hay parser para ese
+      -- filetype, y eso pasa constantemente en ficheros cualquiera.
+      vim.api.nvim_create_autocmd("FileType", {
+        callback = function()
+          if pcall(vim.treesitter.start) then
+            -- Upstream marca el indentado como experimental.
+            vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+          end
+        end,
+      })
     end,
   },
 

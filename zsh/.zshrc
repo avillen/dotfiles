@@ -12,6 +12,37 @@ export PATH="$HOME/.local/bin:$PATH"
 # ── Homebrew ────────────────────────────────────────────────────────────────
 export PATH="/opt/homebrew/bin:$PATH"
 
+# ── herdr auto-start ────────────────────────────────────────────────────────
+# Abrir iTerm entra directo en la sesion de herdr, como hacia el bloque de
+# tmux de arriba. Va aqui a proposito, antes de oh-my-zsh, nvm, gcloud y
+# autojump: esta shell solo existe para lanzar el cliente, y cada panel de
+# herdr abre la suya que si carga todo eso. Necesita el PATH de las dos lineas
+# de arriba, que es donde vive el binario (~/.local/bin).
+#
+# Las guardas, en orden:
+#   HERDR_ENV      ya estamos DENTRO de un panel: sin esto, cada panel nuevo
+#                  intentaria abrir otro cliente. herdr ademas bloquea los
+#                  lanzamientos anidados por diseno, pero mejor no llegar ahi.
+#   CLAUDECODE     las shells que abre claude code tambien leen este .zshrc.
+#   TERM_PROGRAM   solo el iTerm de verdad. Deja fuera la terminal de VS Code
+#                  y las sesiones por ssh (no propagan la variable), donde
+#                  herdr se arranca a mano.
+#   HERDR_AUTOSTART=0  valvula de escape para una shell suelta.
+#
+# Sin `exec`: si herdr falla o te detachas con prefix+q te quedas en esta
+# shell en vez de perder la ventana. Si prefieres que la ventana se cierre al
+# detachar, cambia la linea por `exec herdr`.
+if [[ -o interactive ]] \
+  && [[ -t 1 ]] \
+  && [[ -z "$HERDR_ENV" ]] \
+  && [[ -z "$CLAUDECODE" ]] \
+  && [[ "$TERM_PROGRAM" == "iTerm.app" ]] \
+  && [[ "${HERDR_AUTOSTART:-1}" != "0" ]] \
+  && command -v herdr &>/dev/null
+then
+  herdr
+fi
+
 # ── asdf ────────────────────────────────────────────────────────────────────
 export ASDF_DATA_DIR="$HOME/.asdf"
 export PATH="$ASDF_DATA_DIR/shims:$PATH"

@@ -130,3 +130,17 @@ delay_seconds = 1
 [theme]
 name = "catppuccin"
 auto_switch = false
+
+# ── Acciones del plugin reviewr (persiyanov.reviewr) ────────────────────────
+# Panel de review del diff del agente: comentas lineas y se las mandas de
+# vuelta. Se abre solo al crear/abrir un worktree (auto_open, default del
+# plugin); prefix+d lo esconde y lo trae de nuevo.
+#
+# prefix+d estaba libre: el default de herdr solo usa prefix+shift+d
+# (close_workspace). Ojo con el id: es <plugin_id>.<action_id>, o sea
+# "persiyanov.reviewr", no el nombre "reviewr".
+[[keys.command]]
+key = "prefix+d"
+type = "plugin_action"
+command = "persiyanov.reviewr.toggle"
+description = "reviewr: panel de review"

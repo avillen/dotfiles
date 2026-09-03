@@ -1,0 +1,21 @@
+# reviewr (persiyanov.reviewr) — configuracion
+#
+# Fichero propio del plugin, NO el config.toml de herdr: lo que se ponga en el
+# de herdr no llega aqui. Vive en
+# ~/.config/herdr/plugins/config/persiyanov.reviewr/config.toml (symlink desde
+# install.sh) y se relee en cada refresco (r) y en cada toggle, sin reiniciar.
+#
+#   herdr plugin config-dir persiyanov.reviewr   donde tiene que estar
+#
+# Un fichero invalido se rechaza ENTERO: el panel pinta el error y se recupera
+# solo en el siguiente refresco cuando lo arreglas.
+#
+# El tema no se toca: su default ya es catppuccin, igual que el de herdr.
+
+# Tecla `e` sobre una linea del diff. Sin esto avisa de que no hay editor:
+# $EDITOR no vale aqui porque el panel lo lanza el servidor de herdr, que no
+# pasa por el .zshrc. nvim se queda con el panel y reviewr refresca al salir.
+#
+# {file} y {line} los sustituye reviewr. El comando NO pasa por una shell, asi
+# que nada de ~, $VARS ni pipes: solo argumentos.
+editor = "nvim +{line} {file}"

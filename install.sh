@@ -30,6 +30,11 @@ echo "→ herdr"
 mkdir -p "$HOME/.config/herdr"
 link "$DOTFILES/herdr/config.toml" "$HOME/.config/herdr/config.toml"
 
+# Config del plugin reviewr: fichero suyo, con su propia ruta por plugin_id.
+mkdir -p "$HOME/.config/herdr/plugins/config/persiyanov.reviewr"
+link "$DOTFILES/herdr/reviewr.toml" \
+  "$HOME/.config/herdr/plugins/config/persiyanov.reviewr/config.toml"
+
 mkdir -p "$HOME/.local/bin"
 link "$DOTFILES/herdr/hd" "$HOME/.local/bin/hd"
 

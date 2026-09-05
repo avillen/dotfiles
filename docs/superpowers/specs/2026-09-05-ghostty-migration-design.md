@@ -2,9 +2,9 @@
 
 ## Objetivo
 
-Sustituir iTerm por Ghostty como terminal de uso diario, manteniendo la
-apariencia actual y el acceso automático a Herdr. iTerm permanecerá instalado
-como respaldo.
+Sustituir iTerm por Ghostty como terminal de uso diario, usando la apariencia
+nativa de Ghostty y manteniendo el acceso automático a Herdr. iTerm permanecerá
+instalado como respaldo.
 
 ## Instalación y propiedad de la configuración
 
@@ -16,27 +16,10 @@ respaldará mediante la función `link` existente.
 
 ## Apariencia
 
-Ghostty usará `JetBrainsMono Nerd Font Mono` a 13 puntos. La Nerd Font mantiene
-los glifos usados por Neovim y 13 puntos mejora la lectura frente a los 12 de
-iTerm sin alterar la densidad de forma drástica.
-
-La ventana inicial será de 80 columnas por 25 filas, sin transparencia. Se
-trasladará exactamente la paleta sRGB del perfil predeterminado de iTerm:
-
-| Color | Valor |
-|---|---|
-| Fondo | `#fafafa` |
-| Texto | `#101010` |
-| Cursor | `#000000` |
-| Texto bajo el cursor | `#ffffff` |
-| Selección | `#b3d7ff` |
-| Texto seleccionado | `#000000` |
-| ANSI 0–7 | `#14191e`, `#b43c2a`, `#00c200`, `#c7c400`, `#2744c7`, `#c040be`, `#00c5c7`, `#c7c7c7` |
-| ANSI 8–15 | `#686868`, `#dd7975`, `#58e790`, `#ece100`, `#a7abf2`, `#e17ee1`, `#60fdff`, `#ffffff` |
-
-Se conservarán los atajos nativos de Ghostty. Herdr ya proporciona la
-navegación, paneles y espacios de trabajo principales, por lo que no se
-convertirán los atajos específicos de iTerm.
+`ghostty/config` no impondrá opciones visuales. Ghostty elegirá su tema, fuente,
+tamaño, dimensiones y atajos nativos; el archivo permanece versionado para que
+el instalador pueda provisionar una ruta estable donde añadir overrides después
+de probar los defaults en el uso diario.
 
 ## Autoarranque de Herdr
 
@@ -55,7 +38,8 @@ La migración se considerará completa cuando:
 
 1. Ghostty esté instalado y su ejecutable responda.
 2. `~/.config/ghostty/config` apunte al archivo versionado.
-3. Ghostty acepte toda la configuración sin errores y reconozca la fuente.
+3. Ghostty acepte la configuración sin errores y su salida efectiva coincida
+   con la de un archivo de configuración vacío.
 4. `zsh -n zsh/.zshrc` y `bash -n install.sh` pasen.
 5. Una shell Ghostty interactiva cumpla las condiciones de autoarranque, y una
    shell dentro de tmux quede excluida.

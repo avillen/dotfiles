@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Install Ghostty and make it the configured terminal that automatically opens Herdr while preserving the current iTerm palette.
+**Goal:** Install Ghostty and make it the zero-config terminal that automatically opens Herdr.
 
 **Architecture:** Store one portable Ghostty configuration in the repository and expose it through the existing symlink installer. Keep shell startup responsible for launching Herdr, but restrict that behavior to interactive Ghostty shells outside Herdr and tmux.
 
@@ -14,8 +14,6 @@
 
 - Keep iTerm installed as a fallback.
 - Do not change global macOS file or terminal associations.
-- Preserve the exact sRGB palette recorded in the spec.
-- Use `JetBrainsMono Nerd Font Mono` at 13 points.
 - Keep Ghostty's native keybindings.
 - Keep `HERDR_AUTOSTART=0` as the manual escape hatch.
 - Do not launch Herdr inside tmux, Claude Code, an existing Herdr pane, a non-interactive shell, or a shell without a TTY.
@@ -28,7 +26,7 @@
 - No repository files changed.
 
 **Interfaces:**
-- Consumes: Homebrew cask repository and the installed JetBrains Mono Nerd Font.
+- Consumes: Homebrew's Ghostty cask.
 - Produces: `/Applications/Ghostty.app`, its CLI executable, and locally installed configuration reference documentation.
 
 - [ ] **Step 1: Verify the precondition**
@@ -62,72 +60,38 @@ test -d /Applications/Ghostty.app
 
 Expected: both commands exit 0 and the second prints the installed Ghostty version.
 
-- [ ] **Step 4: Verify the selected font family name**
-
-Run:
-
-```bash
-/Applications/Ghostty.app/Contents/MacOS/ghostty +list-fonts | rg -F "JetBrainsMono Nerd Font Mono"
-```
-
-Expected: at least one matching regular face. If Ghostty exposes a different family spelling for the already-installed `JetBrainsMonoNFM-Regular`, use the exact family returned and update both spec and config consistently.
-
 ### Task 2: Add the versioned Ghostty configuration
 
 **Files:**
 - Create: `ghostty/config`
+- Test: `tests/test_ghostty_config.sh`
 
 **Interfaces:**
-- Consumes: the palette and font choice from the design spec.
-- Produces: a complete Ghostty configuration loadable through `~/.config/ghostty/config`.
+- Consumes: Ghostty's native defaults.
+- Produces: a stable, zero-config file loadable through `~/.config/ghostty/config`.
 
-- [ ] **Step 1: Verify that the configuration is absent**
+- [ ] **Step 1: Write the failing zero-config behavior test**
 
-Run:
+Create `tests/test_ghostty_config.sh` to load the versioned config and a truly
+empty config in isolated XDG directories, then compare Ghostty's effective
+`+show-config` output. Run:
 
 ```bash
-test ! -e ghostty/config
+bash tests/test_ghostty_config.sh
 ```
 
-Expected: PASS, proving the test detects the pre-implementation state.
+Expected: FAIL while the versioned config still contains visual overrides.
 
 - [ ] **Step 2: Create the minimal configuration**
 
 Create `ghostty/config` with:
 
 ```ini
-# Ghostty — reproduce the former iTerm profile while leaving terminal
-# navigation and pane management to Herdr.
-font-family = JetBrainsMono Nerd Font Mono
-font-size = 13
-
-window-width = 80
-window-height = 25
-background-opacity = 1
-
-background = #fafafa
-foreground = #101010
-cursor-color = #000000
-cursor-text = #ffffff
-selection-background = #b3d7ff
-selection-foreground = #000000
-
-palette = 0=#14191e
-palette = 1=#b43c2a
-palette = 2=#00c200
-palette = 3=#c7c400
-palette = 4=#2744c7
-palette = 5=#c040be
-palette = 6=#00c5c7
-palette = 7=#c7c7c7
-palette = 8=#686868
-palette = 9=#dd7975
-palette = 10=#58e790
-palette = 11=#ece100
-palette = 12=#a7abf2
-palette = 13=#e17ee1
-palette = 14=#60fdff
-palette = 15=#ffffff
+# Ghostty — zero-config by design.
+#
+# Keep this file versioned so install.sh can provision the expected path, but
+# let Ghostty choose its native theme, font, dimensions and keybindings. Add
+# overrides here only after trying the defaults in daily use.
 ```
 
 - [ ] **Step 3: Validate the versioned config in isolation**
@@ -137,6 +101,7 @@ Run:
 ```bash
 mkdir -p /tmp/ghostty-cache
 XDG_CACHE_HOME=/tmp/ghostty-cache /Applications/Ghostty.app/Contents/MacOS/ghostty +validate-config --config-file="$PWD/ghostty/config"
+bash tests/test_ghostty_config.sh
 ```
 
 Expected: exit 0 with no configuration errors on stderr.
@@ -147,7 +112,7 @@ Run:
 
 ```bash
 git diff --check
-git add ghostty/config
+git add ghostty/config tests/test_ghostty_config.sh
 git commit -m "feat: add Ghostty terminal config"
 ```
 
@@ -262,7 +227,7 @@ behavioral regressions, and the corrected validation commands in this plan.
 
 **Interfaces:**
 - Consumes: the installed application, live Ghostty symlink, and updated zsh startup predicate.
-- Produces: evidence that Ghostty opens successfully with the migrated appearance; the user retains control of the GUI session.
+- Produces: evidence that Ghostty opens successfully with its native appearance; the user retains control of the GUI session.
 
 - [ ] **Step 1: Confirm the final repository state**
 
@@ -283,7 +248,7 @@ Run:
 open -a Ghostty
 ```
 
-Expected: Ghostty opens an 80×25 light terminal using the migrated palette and 13-point Nerd Font, and the interactive shell starts Herdr. iTerm remains installed.
+Expected: Ghostty opens with its native appearance and the interactive shell starts Herdr. iTerm remains installed.
 
 - [ ] **Step 3: Verify the tmux escape path manually**
 

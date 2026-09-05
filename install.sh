@@ -10,7 +10,7 @@ link() {
     echo "  [backup] $dst → $dst.bak"
     mv "$dst" "$dst.bak"
   fi
-  ln -sf "$src" "$dst"
+  ln -sfn "$src" "$dst"
   echo "  [link]   $dst → $src"
 }
 
@@ -25,6 +25,10 @@ link "$DOTFILES/git/coauthors" "$HOME/.config/git/coauthors"
 
 echo "→ tmux"
 link "$DOTFILES/tmux/.tmux.conf" "$HOME/.tmux.conf"
+
+echo "→ ghostty"
+mkdir -p "$HOME/.config/ghostty"
+link "$DOTFILES/ghostty/config" "$HOME/.config/ghostty/config"
 
 echo "→ herdr"
 mkdir -p "$HOME/.config/herdr"

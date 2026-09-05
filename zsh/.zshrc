@@ -13,7 +13,7 @@ export PATH="$HOME/.local/bin:$PATH"
 export PATH="/opt/homebrew/bin:$PATH"
 
 # ── herdr auto-start ────────────────────────────────────────────────────────
-# Abrir iTerm entra directo en la sesion de herdr, como hacia el bloque de
+# Abrir Ghostty entra directo en la sesion de herdr, como hacia el bloque de
 # tmux de arriba. Va aqui a proposito, antes de oh-my-zsh, nvm, gcloud y
 # autojump: esta shell solo existe para lanzar el cliente, y cada panel de
 # herdr abre la suya que si carga todo eso. Necesita el PATH de las dos lineas
@@ -24,7 +24,8 @@ export PATH="/opt/homebrew/bin:$PATH"
 #                  intentaria abrir otro cliente. herdr ademas bloquea los
 #                  lanzamientos anidados por diseno, pero mejor no llegar ahi.
 #   CLAUDECODE     las shells que abre claude code tambien leen este .zshrc.
-#   TERM_PROGRAM   solo el iTerm de verdad. Deja fuera la terminal de VS Code
+#   TMUX           evita arrancar herdr dentro de una sesion tmux manual.
+#   TERM_PROGRAM   solo Ghostty. Deja fuera la terminal de VS Code, iTerm
 #                  y las sesiones por ssh (no propagan la variable), donde
 #                  herdr se arranca a mano.
 #   HERDR_AUTOSTART=0  valvula de escape para una shell suelta.
@@ -36,7 +37,8 @@ if [[ -o interactive ]] \
   && [[ -t 1 ]] \
   && [[ -z "$HERDR_ENV" ]] \
   && [[ -z "$CLAUDECODE" ]] \
-  && [[ "$TERM_PROGRAM" == "iTerm.app" ]] \
+  && [[ -z "$TMUX" ]] \
+  && [[ "$TERM_PROGRAM" == "ghostty" ]] \
   && [[ "${HERDR_AUTOSTART:-1}" != "0" ]] \
   && command -v herdr &>/dev/null
 then

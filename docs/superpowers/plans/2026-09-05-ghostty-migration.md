@@ -135,7 +135,8 @@ palette = 15=#ffffff
 Run:
 
 ```bash
-/Applications/Ghostty.app/Contents/MacOS/ghostty +show-config --config-file="$PWD/ghostty/config" >/dev/null
+mkdir -p /tmp/ghostty-cache
+XDG_CACHE_HOME=/tmp/ghostty-cache /Applications/Ghostty.app/Contents/MacOS/ghostty +validate-config --config-file="$PWD/ghostty/config"
 ```
 
 Expected: exit 0 with no configuration errors on stderr.
@@ -157,22 +158,25 @@ Expected: clean whitespace check and one commit containing only `ghostty/config`
 **Files:**
 - Modify: `install.sh:29-41`
 - Modify: `zsh/.zshrc:15-44`
+- Create: `tests/test_install.sh`
+- Create: `tests/test_zsh_autostart.sh`
 
 **Interfaces:**
 - Consumes: `ghostty/config` from Task 2 and Ghostty's `TERM_PROGRAM=ghostty` environment contract.
 - Produces: `~/.config/ghostty/config` and a Herdr auto-start predicate scoped to Ghostty.
 
-- [ ] **Step 1: Write the failing structural checks**
+- [ ] **Step 1: Write the failing behavioral checks**
 
-Run:
+Create behavioral tests that run the real installer twice in an isolated
+temporary HOME and open interactive zsh under a pseudo-terminal. Then run:
 
 ```bash
-rg -F 'link "$DOTFILES/ghostty/config" "$HOME/.config/ghostty/config"' install.sh
-rg -F '[[ "$TERM_PROGRAM" == "ghostty" ]]' zsh/.zshrc
-rg -F '[[ -z "$TMUX" ]]' zsh/.zshrc
+bash tests/test_install.sh
+bash tests/test_zsh_autostart.sh
 ```
 
-Expected: all three checks FAIL before implementation.
+Expected: the installer test fails because the Ghostty link is missing, and
+the zsh test fails because Ghostty does not start Herdr.
 
 - [ ] **Step 2: Add the Ghostty link to the installer**
 
@@ -208,9 +212,8 @@ Run:
 ```bash
 bash -n install.sh
 zsh -n zsh/.zshrc
-rg -F 'link "$DOTFILES/ghostty/config" "$HOME/.config/ghostty/config"' install.sh
-rg -F '[[ "$TERM_PROGRAM" == "ghostty" ]]' zsh/.zshrc
-rg -F '[[ -z "$TMUX" ]]' zsh/.zshrc
+bash tests/test_install.sh
+bash tests/test_zsh_autostart.sh
 ! rg -n -i 'iterm' zsh/.zshrc
 ```
 
@@ -233,7 +236,7 @@ Run:
 ```bash
 test -L "$HOME/.config/ghostty/config"
 test "$(readlink "$HOME/.config/ghostty/config")" = "$PWD/ghostty/config"
-/Applications/Ghostty.app/Contents/MacOS/ghostty +show-config >/dev/null
+XDG_CACHE_HOME=/tmp/ghostty-cache /Applications/Ghostty.app/Contents/MacOS/ghostty +validate-config
 herdr config check
 git diff --check
 ```
@@ -245,11 +248,12 @@ Expected: all commands exit 0 and Herdr prints `config: ok`.
 Run:
 
 ```bash
-git add install.sh zsh/.zshrc
+git add install.sh zsh/.zshrc tests/test_install.sh tests/test_zsh_autostart.sh docs/superpowers/plans/2026-09-05-ghostty-migration.md
 git commit -m "feat: migrate terminal startup to Ghostty"
 ```
 
-Expected: one commit containing only the installer and shell startup changes.
+Expected: one commit containing the installer, shell startup changes, their
+behavioral regressions, and the corrected validation commands in this plan.
 
 ### Task 4: Launch smoke test
 
@@ -290,4 +294,3 @@ tmux new-session
 ```
 
 Expected: the tmux shell does not start another Herdr client because `$TMUX` is set.
-

@@ -6,8 +6,10 @@
 #   evento    worktree.created / worktree.opened, con el payload en
 #             $HERDR_PLUGIN_EVENT_JSON. Es el camino normal: lo dispara el
 #             `herdr worktree open` del plugin worktrunk.
-#   accion    invocada a mano (prefix+alt+c), con el workspace enfocado en
-#             $HERDR_PLUGIN_CONTEXT_JSON.
+#   accion    invocada a mano (prefix+alt+c), con el workspace y el panel
+#             enfocados en $HERDR_PLUGIN_CONTEXT_JSON. Arranca claude en ESE
+#             panel, asi que sirve tambien fuera de un worktree: un space de
+#             investigacion con un tab por repo quiere su claude en cada uno.
 #
 # No parte paneles ni monta ningun layout: el panel raiz del workspace ya nace
 # con el cwd del worktree, que es la gracia de `herdr worktree open`.
@@ -54,20 +56,12 @@ panes=$("$H" pane list --workspace "$ws" 2>/dev/null) \
   && printf '%s' "$panes" | jq -e '.result.panes' >/dev/null 2>&1 \
   || give_up "no puedo leer los paneles de $ws"
 
-# Idempotencia: si ya hay un agente en el workspace, no se toca nada.
+# El panel donde va claude: el enfocado si venimos de la accion, y si no el
+# panel raiz, que en un workspace recien nacido es el unico y ya tiene el cwd
+# del worktree.
 #
-# Se mira el campo `agent` que trae cada panel de `pane list` (herdr >= 0.8) y
-# NO el numero de paneles: reviewr abre el suyo con el MISMO evento, asi que
-# contar paneles seria una carrera. Un panel de reviewr o una shell pelada no
-# llevan `agent`, solo lo lleva un agente reconocido.
-printf '%s' "$panes" | jq -e 'any(.result.panes[]; .agent != null)' >/dev/null 2>&1 && exit 0
-
-# El panel donde va claude. En un workspace recien nacido hay uno solo y ya
-# tiene el cwd del worktree.
-#
-# Se elige por numero de panel y no por el orden de la lista: es estable, y en
-# un workspace nuevo el panel raiz es siempre el mas bajo, gane la carrera con
-# reviewr quien la gane.
+# El raiz se elige por numero de panel y no por el orden de la lista: es
+# estable, y es siempre el mas bajo, gane la carrera con reviewr quien la gane.
 target=$focused
 if [ -z "$target" ]; then
   target=$(printf '%s' "$panes" | jq -r '
@@ -77,6 +71,38 @@ if [ -z "$target" ]; then
 fi
 [ -n "$target" ] || target=$(printf '%s' "$panes" | jq -r '.result.panes[0].pane_id // empty' 2>/dev/null)
 [ -n "$target" ] || give_up "el workspace $ws no tiene paneles"
+
+# Idempotencia. Se mira el campo `agent` que trae cada panel de `pane list`
+# (herdr >= 0.8): un panel de reviewr o una shell pelada no lo llevan, solo lo
+# lleva un agente reconocido.
+#
+# El alcance NO es el mismo en las dos vias, a proposito:
+if [ -n "$ev" ]; then
+  # Evento: cualquier agente en el space vale para callarse. Tiene que ser asi
+  # porque reviewr abre su panel con el MISMO evento: mirar solo un panel (o
+  # contar paneles) seria una carrera con el.
+  printf '%s' "$panes" | jq -e 'any(.result.panes[]; .agent != null)' >/dev/null 2>&1 && exit 0
+else
+  # Accion: solo el panel destino. Un space de investigacion lleva un tab por
+  # repo y quiere su claude en cada uno, asi que "ya hay un agente en el space"
+  # no puede impedir arrancar el segundo.
+  printf '%s' "$panes" | jq -e --arg p "$target" \
+    'any(.result.panes[]; .pane_id == $p and .agent != null)' >/dev/null 2>&1 && exit 0
+
+  # Y como aqui el panel lo elige el usuario, puede no estar libre: si tiene
+  # algo en primer plano, `pane run` escribiria en ese programa (el panel de
+  # reviewr, un test corriendo) en vez de en una shell. Un panel en su prompt
+  # tiene el grupo de procesos en primer plano == su propia shell.
+  #
+  # Esta guarda es solo de la accion: en la via del evento la shell del panel
+  # recien creado puede estar todavia cargando, y ahi el buffer de la terminal
+  # es justo lo que se quiere.
+  info=$("$H" pane process-info --pane "$target" 2>/dev/null) \
+    || give_up "no puedo leer el estado de $target"
+  printf '%s' "$info" | jq -e \
+    '.result.process_info | .foreground_process_group_id == .shell_pid' >/dev/null 2>&1 \
+    || give_up "$target esta ocupado: dejalo en su prompt o enfoca otro panel"
+fi
 
 # `pane run` escribe el comando en la shell interactiva del panel y la terminal
 # lo bufferea hasta que acaba de cargar, asi que no hay que esperar al prompt:

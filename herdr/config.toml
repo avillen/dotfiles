@@ -83,6 +83,18 @@ navigate_pane_up = ""
 # Paneles pegados, sin separacion: comparten el borde divisorio.
 pane_gaps = false
 
+# Pide nombre al crear un space (prefix+c). El default los crea con un nombre
+# generado, que valdria si un space fuese un sitio cualquiera; aqui un space es
+# una unidad de trabajo (una incidencia, una feature, una revision), asi que
+# tiene que llamarse como ella. Los worktrees no pasan por aqui: su nombre lo
+# pone el plugin de worktrunk con la rama.
+prompt_new_workspace_name = true
+
+# Esconde la barra de tabs cuando el space tiene un solo tab, que es el caso
+# normal: un worktree es un tab, y solo los spaces de investigacion (un tab por
+# repo) llegan a tener varios. Las tabs nuevas se siguen creando con prefix+t.
+hide_tab_bar_when_single_tab = true
+
 # Fecha y hora arriba a la derecha, con el mismo formato que el
 # `status-right " %Y-%m-%d %H:%M "` de tmux. Se apoya en que la barra de tabs
 # esta arriba, que es el default (ui.tab_bar_position = "top").

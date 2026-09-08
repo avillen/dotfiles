@@ -81,6 +81,11 @@ return {
         "typescript",
         "tsx",
         "json",
+        -- Los dos hacen falta para render-markdown.nvim (plugins/markdown.lua):
+        -- markdown da la estructura de bloque (cabeceras, listas, tablas) y
+        -- markdown_inline lo de dentro de la linea (enfasis, links, code spans).
+        "markdown",
+        "markdown_inline",
       })
 
       -- Sustituye a highlight = { enable = true } e indent = { enable = true }.

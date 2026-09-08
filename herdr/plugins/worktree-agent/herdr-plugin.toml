@@ -1,0 +1,45 @@
+# worktree-agent — arranca claude al abrir un worktree
+#
+# Es lo unico que se echaba de menos del script `hd` que vivia aqui: no tener
+# que escribir `claude` a mano en cada worktree nuevo. Todo lo demas (crear,
+# borrar, mergear) lo hace el plugin worktrunk, que crea el checkout con `wt`
+# —con sus hooks— y lo registra con `herdr worktree open`, que es precisamente
+# lo que emite los eventos de aqui abajo.
+#
+# No monta ningun layout a proposito: el panel raiz del workspace ya nace con
+# el cwd del worktree, asi que basta con lanzar el agente ahi. Los paneles que
+# quieras, cuando los quieras (prefix+% y prefix+").
+#
+# Se instala con `herdr plugin link` y no con `plugin install` (ver install.sh):
+# el plugin vive en este repo. herdr CACHEA el manifest al enlazar, asi que
+# tocar este fichero exige relink; los cambios en start.sh se cogen en la
+# siguiente ejecucion, sin nada.
+id = "worktree-agent"
+name = "Worktree agent"
+version = "0.1.0"
+min_herdr_version = "0.8.0"
+platforms = ["macos", "linux"]
+description = "Arranca claude en el panel de un worktree recien abierto"
+
+# Hacen falta los dos eventos:
+#   worktree.created  worktree creado por herdr (`herdr worktree create`)
+#   worktree.opened   checkout que ya existe en disco y se registra con
+#                     `herdr worktree open`. Esta es la via del plugin
+#                     worktrunk, o sea la que se usa en la practica.
+#
+# El payload llega en $HERDR_PLUGIN_EVENT_JSON.
+[[events]]
+on = "worktree.created"
+command = ["bash", "-c", "exec bash \"$HERDR_PLUGIN_ROOT/start.sh\""]
+
+[[events]]
+on = "worktree.opened"
+command = ["bash", "-c", "exec bash \"$HERDR_PLUGIN_ROOT/start.sh\""]
+
+# Para arrancarlo a mano en un workspace que ya existe: si cierras el claude de
+# un worktree y quieres otro. Bindeada en config.toml.
+[[actions]]
+id = "start"
+title = "Worktree: arrancar claude"
+contexts = ["workspace"]
+command = ["bash", "-c", "exec bash \"$HERDR_PLUGIN_ROOT/start.sh\""]

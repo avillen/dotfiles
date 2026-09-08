@@ -60,7 +60,7 @@ open_notification_target = "prefix+shift+o"
 # `wt` (hooks incluidos) y lo registra con `herdr worktree open`, asi que el
 # worktree acaba siendo un workspace nativo de herdr — sale en
 # `herdr worktree list`, se cierra de una pieza al borrarlo, y emite los
-# eventos worktree.created/opened de los que cuelgan reviewr y worktree-layout.
+# eventos worktree.created/opened de los que cuelgan reviewr y worktree-agent.
 new_worktree = ""
 
 # ── Moverse entre spaces con j/k ────────────────────────────────────────────
@@ -125,15 +125,15 @@ type = "plugin_action"
 command = "worktrunk.merge"
 description = "worktree: merge y limpieza"
 
-# ── Accion del plugin propio worktree-layout ────────────────────────────────
-# El layout (claude arriba, terminal abajo) se pone solo al abrir un worktree,
-# por evento. Esta tecla es para rehacerlo a mano en un workspace que ya
-# existe, p.ej. si has cerrado el claude. No hace nada si ya hay un agente.
+# ── Accion del plugin propio worktree-agent ─────────────────────────────────
+# Al abrir un worktree, claude arranca solo por evento. Esta tecla es para
+# arrancarlo a mano en un workspace que ya existe, p.ej. si has cerrado el que
+# habia. No hace nada si ya hay un agente en el space.
 [[keys.command]]
-key = "prefix+alt+l"
+key = "prefix+alt+c"
 type = "plugin_action"
-command = "worktree-layout.apply"
-description = "worktree: layout claude + terminal"
+command = "worktree-agent.start"
+description = "worktree: arrancar claude"
 
 # Aviso cuando un agente termina o se bloquea pidiendo permiso en un space que
 # no estas mirando. "system" usa la notificacion del SO; "herdr" la pinta dentro

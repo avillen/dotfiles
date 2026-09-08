@@ -57,8 +57,3 @@ EOF
 gcpair() {
   gca "$@"
 }
-
-# ── herdr ───────────────────────────────────────────────────────────────────
-# `hd` es un script en ~/.local/bin (ver install.sh), no un alias: asi funciona
-# tambien desde scripts y desde los hooks. `hd add <rama>` crea el worktree con
-# su layout; cualquier otro argumento se lo pasa a herdr tal cual.

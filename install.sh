@@ -39,8 +39,20 @@ mkdir -p "$HOME/.config/herdr/plugins/config/persiyanov.reviewr"
 link "$DOTFILES/herdr/reviewr.toml" \
   "$HOME/.config/herdr/plugins/config/persiyanov.reviewr/config.toml"
 
-mkdir -p "$HOME/.local/bin"
-link "$DOTFILES/herdr/hd" "$HOME/.local/bin/hd"
+# Plugin propio: el layout de un worktree (claude arriba, terminal abajo). Va
+# con `plugin link` y no con `plugin install` porque vive en este repo. herdr
+# cachea el manifest al enlazar, asi que se re-enlaza siempre: si no, un cambio
+# en herdr-plugin.toml no se cogeria nunca.
+if command -v herdr > /dev/null 2>&1; then
+  herdr plugin unlink worktree-layout > /dev/null 2>&1
+  if herdr plugin link "$DOTFILES/herdr/plugins/worktree-layout" > /dev/null; then
+    echo "  [plugin] worktree-layout"
+  else
+    echo "  [error]  no he podido enlazar el plugin worktree-layout" >&2
+  fi
+else
+  echo "  [skip]   herdr no esta instalado: plugin worktree-layout sin enlazar"
+fi
 
 echo "→ config local"
 # No es un symlink: lleva valores propios de la maquina y el repo es publico.

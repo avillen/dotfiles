@@ -50,10 +50,17 @@ edit_scrollback = "prefix+shift+e"
 open_notification_target = "prefix+shift+o"
 
 # ── Worktrees: los gestiona worktrunk ───────────────────────────────────────
-# Se desactiva la creacion propia de herdr a proposito. Crea el worktree por su
-# cuenta y NO dispara los hooks de worktrunk, asi que un worktree creado por
+# Se desactiva la creacion propia de herdr a proposito: crea el worktree con
+# `git worktree add` y NO dispara los hooks de worktrunk, asi que uno creado por
 # esta via se quedaria sin su entorno Docker aislado y `make test` acabaria
-# testeando el codigo del checkout principal. Un unico camino: prefix+alt+w.
+# testeando el codigo del checkout principal. herdr no tiene sistema de hooks,
+# y por eso worktrunk sigue siendo el que crea.
+#
+# El camino unico es prefix+alt+w: el plugin worktrunk crea el checkout con
+# `wt` (hooks incluidos) y lo registra con `herdr worktree open`, asi que el
+# worktree acaba siendo un workspace nativo de herdr — sale en
+# `herdr worktree list`, se cierra de una pieza al borrarlo, y emite los
+# eventos worktree.created/opened de los que cuelgan reviewr y worktree-layout.
 new_worktree = ""
 
 # ── Moverse entre spaces con j/k ────────────────────────────────────────────
@@ -118,6 +125,16 @@ type = "plugin_action"
 command = "worktrunk.merge"
 description = "worktree: merge y limpieza"
 
+# ── Accion del plugin propio worktree-layout ────────────────────────────────
+# El layout (claude arriba, terminal abajo) se pone solo al abrir un worktree,
+# por evento. Esta tecla es para rehacerlo a mano en un workspace que ya
+# existe, p.ej. si has cerrado el claude. No hace nada si ya hay un agente.
+[[keys.command]]
+key = "prefix+alt+l"
+type = "plugin_action"
+command = "worktree-layout.apply"
+description = "worktree: layout claude + terminal"
+
 # Aviso cuando un agente termina o se bloquea pidiendo permiso en un space que
 # no estas mirando. "system" usa la notificacion del SO; "herdr" la pinta dentro
 # de la app y solo se ve si estas delante. Antes de instalar la integracion
@@ -133,8 +150,13 @@ auto_switch = false
 
 # ── Acciones del plugin reviewr (persiyanov.reviewr) ────────────────────────
 # Panel de review del diff del agente: comentas lineas y se las mandas de
-# vuelta. Se abre solo al crear/abrir un worktree (auto_open, default del
-# plugin); prefix+d lo esconde y lo trae de nuevo.
+# vuelta. Se abre solo al nacer el workspace de un worktree (auto_open, default
+# del plugin), a la derecha del agente y sin robar el foco; prefix+d lo esconde
+# y lo trae de nuevo.
+#
+# Cuelga de los eventos worktree.created/opened, o sea que solo salta si el
+# worktree se abre por la API de herdr. Con el viejo script `hd`, que montaba
+# los paneles a mano, no saltaba nunca y habia que darle a prefix+d.
 #
 # prefix+d estaba libre: el default de herdr solo usa prefix+shift+d
 # (close_workspace). Ojo con el id: es <plugin_id>.<action_id>, o sea

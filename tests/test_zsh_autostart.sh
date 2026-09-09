@@ -13,6 +13,9 @@ printf '%s\n' \
 chmod +x "$test_home/.local/bin/herdr"
 touch "$test_home/.oh-my-zsh/oh-my-zsh.sh"
 
+# ZDOTDIR apunta al repo para cargar el .zshrc de verdad, y el /etc/zshrc de
+# macOS deriva de ahi HISTFILE y las shell sessions: sin redirigir las dos, cada
+# pasada deja un zsh/.zsh_history y un zsh/.zsh_sessions/ dentro del repo.
 run_case() {
   local name="$1" term_program="$2" tmux_value="$3" expected="$4"
   local log="$test_home/$name.log"
@@ -20,6 +23,8 @@ run_case() {
   /usr/bin/script -q /dev/null /usr/bin/env \
     HOME="$test_home" \
     ZDOTDIR="$repo_root/zsh" \
+    HISTFILE="$test_home/.zsh_history" \
+    SHELL_SESSIONS_DISABLE=1 \
     PATH="/usr/local/bin:/usr/bin:/bin" \
     TERM_PROGRAM="$term_program" \
     TMUX="$tmux_value" \

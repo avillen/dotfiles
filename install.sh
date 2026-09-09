@@ -10,6 +10,11 @@ link() {
     echo "  [backup] $dst → $dst.bak"
     mv "$dst" "$dst.bak"
   fi
+  # -n es imprescindible en los enlaces a directorio (nvim): sin el, cuando
+  # $dst ya es un symlink a directorio, ln resuelve el enlace y crea el nuevo
+  # DENTRO ($DOTFILES/nvim/nvim) en vez de reemplazarlo. Con -n trata el
+  # symlink como fichero y lo sobreescribe, que es lo que se quiere al
+  # reejecutar el instalador. Lo cubre tests/test_install.sh.
   ln -sfn "$src" "$dst"
   echo "  [link]   $dst → $src"
 }
@@ -43,16 +48,31 @@ link "$DOTFILES/herdr/reviewr.toml" \
 # no con `plugin install` porque vive en este repo. herdr cachea el manifest al
 # enlazar, asi que se re-enlaza siempre: si no, un cambio en herdr-plugin.toml
 # no se cogeria nunca.
-if command -v herdr > /dev/null 2>&1; then
-  herdr plugin unlink worktree-agent > /dev/null 2>&1
-  if herdr plugin link "$DOTFILES/herdr/plugins/worktree-agent" > /dev/null; then
-    echo "  [plugin] worktree-agent"
-  else
-    echo "  [error]  no he podido enlazar el plugin worktree-agent" >&2
-  fi
-else
-  echo "  [skip]   herdr no esta instalado: plugin worktree-agent sin enlazar"
-fi
+#
+# Es el unico paso del instalador que NO es un symlink en $HOME: toca el estado
+# global de herdr (su servidor vivo, via socket). Por eso se salta cuando el
+# repo no esta dentro de $HOME, que es como corre tests/test_install.sh: desde
+# una copia en /tmp y con HOME falso. Sin la guarda, ese test dejaria el plugin
+# de verdad apuntando a un directorio que borra al terminar — el socket llega
+# por HERDR_SOCKET_PATH, que esta exportado en cada panel. Y de paso, ejecutar
+# install.sh desde un worktree de dotfiles tampoco secuestra el plugin.
+case "$DOTFILES" in
+  "$HOME"/*)
+    if command -v herdr > /dev/null 2>&1; then
+      herdr plugin unlink worktree-agent > /dev/null 2>&1
+      if herdr plugin link "$DOTFILES/herdr/plugins/worktree-agent" > /dev/null; then
+        echo "  [plugin] worktree-agent"
+      else
+        echo "  [error]  no he podido enlazar el plugin worktree-agent" >&2
+      fi
+    else
+      echo "  [skip]   herdr no esta instalado: plugin worktree-agent sin enlazar"
+    fi
+    ;;
+  *)
+    echo "  [skip]   $DOTFILES esta fuera de \$HOME: plugin worktree-agent sin enlazar"
+    ;;
+esac
 
 echo "→ config local"
 # No es un symlink: lleva valores propios de la maquina y el repo es publico.

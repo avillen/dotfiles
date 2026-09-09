@@ -25,9 +25,9 @@ export PATH="/opt/homebrew/bin:$PATH"
 #                  lanzamientos anidados por diseno, pero mejor no llegar ahi.
 #   CLAUDECODE     las shells que abre claude code tambien leen este .zshrc.
 #   TMUX           evita arrancar herdr dentro de una sesion tmux manual.
-#   TERM_PROGRAM   solo Ghostty. Deja fuera la terminal de VS Code, iTerm
-#                  y las sesiones por ssh (no propagan la variable), donde
-#                  herdr se arranca a mano.
+#   TERM_PROGRAM   solo Ghostty. Deja fuera cualquier otra terminal (la de
+#                  VS Code, la de macOS) y las sesiones por ssh, que no
+#                  propagan la variable: ahi herdr se arranca a mano.
 #   HERDR_AUTOSTART=0  valvula de escape para una shell suelta.
 #
 # Sin `exec`: si herdr falla o te detachas con prefix+q te quedas en esta

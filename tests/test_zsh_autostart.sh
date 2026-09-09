@@ -41,5 +41,5 @@ run_case() {
 }
 
 run_case ghostty-starts-herdr ghostty "" invoked
-run_case iterm-does-not-start-herdr iTerm.app "" skipped
+run_case other-terminal-does-not-start-herdr Apple_Terminal "" skipped
 run_case tmux-does-not-start-herdr ghostty /tmp/tmux-1000/default,1,0 skipped

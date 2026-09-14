@@ -161,4 +161,22 @@ lmwhere() {
   fi
 }
 
+# ── worktrunk: integracion con la shell ─────────────────────────────────────
+# Define la funcion `wt` que envuelve al binario. El binario se comunica con la
+# shell por ficheros de directiva (WORKTRUNK_DIRECTIVE_CD_FILE y _EXEC_FILE), o
+# sea que sin esta funcion `wt switch` cambia de worktree pero no te deja dentro.
+#
+# Deja de ser opcional al pasar el plugin de herdr a open_mode = "tab" (ver
+# herdr/worktrunk.toml): en ese modo el picker lanza `wt switch` en la shell
+# interactiva del tab nuevo y depende de ella para el cd. En el modo workspace
+# no hacia falta, porque ahi el plugin llama al binario desde su propio bash y
+# con --no-cd.
+#
+# Va al final del fichero a proposito, DESPUES de oh-my-zsh: las completions de
+# wt necesitan compinit hecho antes, y oh-my-zsh es el unico que lo hace aqui.
+# Subir esta linea por encima las pierde en silencio, sin ningun error.
+#
+# La guarda de fuera no sobra aunque el script que se evalua traiga la suya:
+# sin ella, `$(command wt config shell init zsh)` se ejecutaria igual en una
+# maquina sin wt y soltaria el error en cada shell.
 if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)"; fi

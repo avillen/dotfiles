@@ -1,0 +1,22 @@
+# worktrunk (devashish2203/herdr-worktrunk) — configuracion
+#
+# Fichero propio del plugin, NO el config.toml de herdr. Vive en
+# ~/.config/herdr/plugins/config/worktrunk/config.toml (symlink desde install.sh)
+# y lo relee en cada invocacion (config.sh lo lee con sed en cada llamada), asi
+# que no hace falta reiniciar ni recargar nada.
+#
+#   herdr plugin config-dir worktrunk   donde tiene que estar
+#
+# A PRUEBA: el worktree como TAB del space donde estas, en vez de como space
+# propio colgado del repo. El default ("workspace") registra el checkout con
+# `herdr worktree open`, y eso es lo que emite worktree.created/opened; en tab
+# mode el picker hace `herdr tab create --workspace $HERDR_WORKSPACE_ID` y no
+# emite nada. Consecuencia: claude (plugin worktree-agent) y el panel de reviewr
+# dejan de salir solos y hay que pedirlos a mano con prefix+alt+c y prefix+d.
+#
+# Lo que NO se rompe: `wt` corre igual —con sus hooks, o sea el Docker aislado—
+# y prefix+alt+r / prefix+alt+m siguen funcionando, porque lifecycle.sh tiene
+# rama para este modo (si no hay workspace que cerrar, cierra los paneles por cwd).
+#
+# Para volver atras: borra este fichero, o pon open_mode = "workspace".
+open_mode = "tab"

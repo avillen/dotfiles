@@ -44,6 +44,12 @@ mkdir -p "$HOME/.config/herdr/plugins/config/persiyanov.reviewr"
 link "$DOTFILES/herdr/reviewr.toml" \
   "$HOME/.config/herdr/plugins/config/persiyanov.reviewr/config.toml"
 
+# Config del plugin worktrunk: misma historia, con su ruta por plugin_id. Su
+# plugin_id es "worktrunk" a secas, sin el owner, a diferencia del de reviewr.
+mkdir -p "$HOME/.config/herdr/plugins/config/worktrunk"
+link "$DOTFILES/herdr/worktrunk.toml" \
+  "$HOME/.config/herdr/plugins/config/worktrunk/config.toml"
+
 # Plugin propio: arrancar claude al abrir un worktree. Va con `plugin link` y
 # no con `plugin install` porque vive en este repo. herdr cachea el manifest al
 # enlazar, asi que se re-enlaza siempre: si no, un cambio en herdr-plugin.toml

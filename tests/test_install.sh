@@ -14,7 +14,6 @@ cp -R \
   "$repo_root/ghostty" \
   "$repo_root/herdr" \
   "$repo_root/nvim" \
-  "$repo_root/tmux" \
   "$repo_root/worktrunk" \
   "$repo_root/zsh" \
   "$test_repo"

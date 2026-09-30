@@ -1,11 +1,3 @@
-# ── tmux auto-start (desactivado) ───────────────────────────────────────────
-# Desactivado durante el PoC de herdr: si tmux arranca solo, se come el ctrl+b
-# y herdr nunca ve su prefix. Para volver, descomenta el bloque.
-# if command -v tmux &>/dev/null && [ -z "$TMUX" ]; then
-#   tmux attach -t default 2>/dev/null || tmux new-session -s default
-# fi
-
-
 # ── bin ─────────────────────────────────────────────────────────────────────
 export PATH="$HOME/.local/bin:$PATH"
 
@@ -13,8 +5,7 @@ export PATH="$HOME/.local/bin:$PATH"
 export PATH="/opt/homebrew/bin:$PATH"
 
 # ── herdr auto-start ────────────────────────────────────────────────────────
-# Abrir Ghostty entra directo en la sesion de herdr, como hacia el bloque de
-# tmux de arriba. Va aqui a proposito, antes de oh-my-zsh, nvm, gcloud y
+# Abrir Ghostty entra directo en la sesion de herdr. Va aqui a proposito, antes de oh-my-zsh, nvm, gcloud y
 # autojump: esta shell solo existe para lanzar el cliente, y cada panel de
 # herdr abre la suya que si carga todo eso. Necesita el PATH de las dos lineas
 # de arriba, que es donde vive el binario (~/.local/bin).
@@ -24,7 +15,6 @@ export PATH="/opt/homebrew/bin:$PATH"
 #                  intentaria abrir otro cliente. herdr ademas bloquea los
 #                  lanzamientos anidados por diseno, pero mejor no llegar ahi.
 #   CLAUDECODE     las shells que abre claude code tambien leen este .zshrc.
-#   TMUX           evita arrancar herdr dentro de una sesion tmux manual.
 #   TERM_PROGRAM   solo Ghostty. Deja fuera cualquier otra terminal (la de
 #                  VS Code, la de macOS) y las sesiones por ssh, que no
 #                  propagan la variable: ahi herdr se arranca a mano.
@@ -37,7 +27,6 @@ if [[ -o interactive ]] \
   && [[ -t 1 ]] \
   && [[ -z "$HERDR_ENV" ]] \
   && [[ -z "$CLAUDECODE" ]] \
-  && [[ -z "$TMUX" ]] \
   && [[ "$TERM_PROGRAM" == "ghostty" ]] \
   && [[ "${HERDR_AUTOSTART:-1}" != "0" ]] \
   && command -v herdr &>/dev/null
@@ -86,18 +75,6 @@ DOTFILES_LOCAL_ENV="${DOTFILES_LOCAL_ENV:-$HOME/.config/dotfiles/local.env}"
 
 # ── Autojump ────────────────────────────────────────────────────────────────
 [ -f /opt/homebrew/etc/profile.d/autojump.sh ] && . /opt/homebrew/etc/profile.d/autojump.sh
-
-# ── Tmux window name = project (git root or current dir) ────────────────────
-_tmux_set_window_name() {
-  [ -z "$TMUX" ] && return
-  local name
-  name=$(git rev-parse --show-toplevel 2>/dev/null)
-  name=${name:+$(basename "$name")}
-  name=${name:-$(basename "$PWD")}
-  tmux rename-window "$name"
-}
-chpwd_functions+=(_tmux_set_window_name)
-_tmux_set_window_name
 
 # ── Entorno Docker propio por worktree (worktrunk) ──────────────────────────
 # Hay repos que fijan el proyecto de compose con '-p' en el Makefile y cuyos

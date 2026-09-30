@@ -17,7 +17,7 @@ touch "$test_home/.oh-my-zsh/oh-my-zsh.sh"
 # macOS deriva de ahi HISTFILE y las shell sessions: sin redirigir las dos, cada
 # pasada deja un zsh/.zsh_history y un zsh/.zsh_sessions/ dentro del repo.
 run_case() {
-  local name="$1" term_program="$2" tmux_value="$3" expected="$4"
+  local name="$1" term_program="$2" expected="$3"
   local log="$test_home/$name.log"
 
   /usr/bin/script -q /dev/null /usr/bin/env \
@@ -27,7 +27,6 @@ run_case() {
     SHELL_SESSIONS_DISABLE=1 \
     PATH="/usr/local/bin:/usr/bin:/bin" \
     TERM_PROGRAM="$term_program" \
-    TMUX="$tmux_value" \
     HERDR_ENV= \
     CLAUDECODE= \
     HERDR_AUTOSTART=1 \
@@ -45,6 +44,5 @@ run_case() {
   fi
 }
 
-run_case ghostty-starts-herdr ghostty "" invoked
-run_case other-terminal-does-not-start-herdr Apple_Terminal "" skipped
-run_case tmux-does-not-start-herdr ghostty /tmp/tmux-1000/default,1,0 skipped
+run_case ghostty-starts-herdr ghostty invoked
+run_case other-terminal-does-not-start-herdr Apple_Terminal skipped

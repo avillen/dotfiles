@@ -119,13 +119,37 @@ _wt_compose_project() {
 }
 
 # Solo inyecta en worktrees y solo si ese Makefile define PROJECT_NAME.
+#
+# No se apoya en _wt_compose_project ni en $_WT_PROJECT_SCRIPT a proposito: el
+# snapshot de shell de Claude Code replica esta funcion (con los alias ya
+# expandidos) pero NO las variables ni las funciones con guion bajo delante, asi
+# que ahi el helper no existe. Con la version anterior eso hacia fallar el 'if'
+# y caia al else, lanzando el target con el '-p' que trae el Makefile, es decir
+# contra el contenedor de OTRO worktree y sin decir nada: verde falso.
+# Si no se puede deducir el proyecto, mejor abortar que adivinar.
 make() {
-  local root project
+  local root project script
   root=$(git rev-parse --show-toplevel 2>/dev/null)
-  if [ -n "$root" ] \
-     && grep -qE '^PROJECT_NAME[[:space:]]*:?=' "$root/Makefile" 2>/dev/null \
-     && project=$(_wt_compose_project); then
+  if [ -z "$root" ] || ! grep -qE '^PROJECT_NAME[[:space:]]*:?=' "$root/Makefile" 2>/dev/null; then
+    command make "$@"
+    return
+  fi
+
+  script="${_WT_PROJECT_SCRIPT:-$HOME/dotfiles/worktrunk/wt-compose-project.sh}"
+  if [ ! -x "$script" ]; then
+    print -u2 "make: no encuentro '$script', no puedo deducir el proyecto de compose."
+    print -u2 "      Este Makefile fija el proyecto con '-p', asi que sin deducirlo los targets"
+    print -u2 "      irian contra el contenedor de otro worktree."
+    print -u2 "      Pasalo a mano:  make $* PROJECT_NAME=<proyecto>"
+    return 1
+  fi
+
+  if project=$("$script"); then
     command make PROJECT_NAME="$project" "$@"
+  elif [ -n "${WT_SHARED_PROJECT:-}" ]; then
+    # El script sale 1 en el checkout principal: ahi no hay nada que aislar, y
+    # el proyecto correcto es el que diga la config, no el default del Makefile.
+    command make PROJECT_NAME="$WT_SHARED_PROJECT" "$@"
   else
     command make "$@"
   fi

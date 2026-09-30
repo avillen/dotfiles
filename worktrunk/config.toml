@@ -1,0 +1,17 @@
+# Config de usuario de worktrunk (~/.config/worktrunk/config.toml, symlink desde
+# install.sh). Aplica a todos los repos; los hooks de cada proyecto van en su
+# .config/wt.toml.
+
+# Borrar un worktree borra tambien su rama local, este mergeada o no.
+#
+# worktrunk no tiene opcion para que `wt remove` haga -D por defecto: solo borra
+# la rama si esta integrada en la rama por defecto. Y el plugin de herdr
+# (prefix+alt+r) llama a `wt remove` sin flags, asi que un alias tampoco lo
+# cubriria. Este hook si: corre despues de cualquier remove, venga de donde venga.
+#
+# post-remove corre en el worktree principal, ya sin el borrado checkout. La
+# guarda con show-ref es porque muchas veces la rama ya no existe: la ha borrado
+# worktrunk por estar mergeada, o viene de `wt merge`, que tambien lanza este
+# hook. Ojo: por lo mismo, `wt remove --no-delete-branch` deja de conservarla.
+[post-remove]
+delete-branch = "git show-ref --verify --quiet refs/heads/{{ branch }} && git branch -D {{ branch }} || true"

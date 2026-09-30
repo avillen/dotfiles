@@ -80,6 +80,10 @@ case "$DOTFILES" in
     ;;
 esac
 
+echo "→ worktrunk"
+mkdir -p "$HOME/.config/worktrunk"
+link "$DOTFILES/worktrunk/config.toml" "$HOME/.config/worktrunk/config.toml"
+
 echo "→ config local"
 # No es un symlink: lleva valores propios de la maquina y el repo es publico.
 mkdir -p "$HOME/.config/dotfiles"

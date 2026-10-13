@@ -12,12 +12,17 @@ export PATH="/opt/homebrew/bin:$PATH"
 #
 # Las guardas, en orden:
 #   HERDR_ENV      ya estamos DENTRO de un panel: sin esto, cada panel nuevo
-#                  intentaria abrir otro cliente. herdr ademas bloquea los
-#                  lanzamientos anidados por diseno, pero mejor no llegar ahi.
+#                  intentaria abrir otro cliente. Desde herdr 0.9.2 ya lo
+#                  cubre TERM_PROGRAM (los paneles llevan TERM_PROGRAM=herdr),
+#                  y herdr ademas bloquea los lanzamientos anidados; se deja
+#                  porque no cuesta nada y no depende de la version de herdr.
 #   CLAUDECODE     las shells que abre claude code tambien leen este .zshrc.
+#                  Esta si hace falta: un claude lanzado en Ghostty fuera de
+#                  herdr sigue viendo TERM_PROGRAM=ghostty.
 #   TERM_PROGRAM   solo Ghostty. Deja fuera cualquier otra terminal (la de
-#                  VS Code, la de macOS) y las sesiones por ssh, que no
-#                  propagan la variable: ahi herdr se arranca a mano.
+#                  VS Code, la de macOS), los paneles de herdr y las sesiones
+#                  por ssh, que no propagan la variable: ahi herdr se arranca
+#                  a mano.
 #   HERDR_AUTOSTART=0  valvula de escape para una shell suelta.
 #
 # Sin `exec`: si herdr falla o te detachas con prefix+q te quedas en esta

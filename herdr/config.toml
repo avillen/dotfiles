@@ -57,10 +57,10 @@ open_notification_target = "prefix+shift+o"
 # y por eso worktrunk sigue siendo el que crea.
 #
 # El camino unico es prefix+alt+w: el plugin worktrunk crea el checkout con
-# `wt` (hooks incluidos) y lo registra con `herdr worktree open`, asi que el
-# worktree acaba siendo un workspace nativo de herdr — sale en
-# `herdr worktree list`, se cierra de una pieza al borrarlo, y emite los
-# eventos worktree.created/opened de los que cuelgan reviewr y worktree-agent.
+# `wt` (hooks incluidos) y lo abre como tab del space en el que estas
+# (open_mode = "tab", ver worktrunk.toml). Por esa via herdr no registra el
+# worktree ni emite worktree.created/opened, asi que claude y el panel de
+# reviewr no salen solos: se piden con prefix+alt+c y prefix+d.
 new_worktree = ""
 
 # ── Moverse entre spaces con j/k ────────────────────────────────────────────
@@ -138,9 +138,9 @@ command = "worktrunk.merge"
 description = "worktree: merge y limpieza"
 
 # ── Accion del plugin propio worktree-agent ─────────────────────────────────
-# Al abrir un worktree, claude arranca solo por evento. Esta tecla es para
-# arrancarlo a mano en un workspace que ya existe, p.ej. si has cerrado el que
-# habia. No hace nada si ya hay un agente en el space.
+# Arranca claude en el panel enfocado: es la forma de tenerlo en un worktree
+# recien abierto, o de recuperarlo si lo has cerrado. No hace nada si ese panel
+# ya tiene un agente, y se niega si esta ocupado con otra cosa.
 [[keys.command]]
 key = "prefix+alt+c"
 type = "plugin_action"
@@ -162,13 +162,11 @@ auto_switch = false
 
 # ── Acciones del plugin reviewr (persiyanov.reviewr) ────────────────────────
 # Panel de review del diff del agente: comentas lineas y se las mandas de
-# vuelta. Se abre solo al nacer el workspace de un worktree (auto_open, default
-# del plugin), a la derecha del agente y sin robar el foco; prefix+d lo esconde
-# y lo trae de nuevo.
+# vuelta. prefix+d lo abre, lo esconde y lo trae de nuevo.
 #
-# Cuelga de los eventos worktree.created/opened, o sea que solo salta si el
-# worktree se abre por la API de herdr. Con el viejo script `hd`, que montaba
-# los paneles a mano, no saltaba nunca y habia que darle a prefix+d.
+# Su auto_open (default del plugin) cuelga de los eventos worktree.created/
+# opened, que en tab mode no se emiten (ver new_worktree arriba), asi que el
+# panel se pide siempre a mano.
 #
 # prefix+d estaba libre: el default de herdr solo usa prefix+shift+d
 # (close_workspace). Ojo con el id: es <plugin_id>.<action_id>, o sea

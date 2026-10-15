@@ -113,10 +113,23 @@ echo "wt-docker-setup: arrancando entorno '$project'"
 make PROJECT_NAME="$project" env-start || exit 1
 
 i=0
-while [ "$i" -lt 30 ]; do
-  make PROJECT_NAME="$project" migrate && exit 0
+until make PROJECT_NAME="$project" migrate; do
   i=$((i + 1))
+  if [ "$i" -ge 30 ]; then
+    echo "wt-docker-setup: las migraciones no han pasado tras 30 intentos" >&2
+    exit 1
+  fi
   sleep 2
 done
-echo "wt-docker-setup: las migraciones no han pasado tras 30 intentos" >&2
-exit 1
+
+# La imagen hace collectstatic en el build, pero el bind mount ..:/app la tapa
+# con el checkout, y un worktree nuevo no trae staticfiles/ (gitignorado). Sin
+# el manifest, todo lo que renderiza el admin de Django revienta con "Missing
+# staticfiles manifest entry" (p. ej. core/tests/admin en last-mile). Solo en
+# repos cuyo Makefile tiene el target: 'make -n' falla si no existe.
+if make -n collectstatic >/dev/null 2>&1; then
+  make PROJECT_NAME="$project" collectstatic || {
+    echo "wt-docker-setup: collectstatic ha fallado" >&2
+    exit 1
+  }
+fi
